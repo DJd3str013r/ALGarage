@@ -1,0 +1,230 @@
+@page "/garagem/{Id:guid}"
+@attribute [Authorize]
+@using System.ComponentModel.DataAnnotations
+@inject VehicleService Vehicles
+@inject MaintenanceStatusService Maintenance
+@inject ServiceHistoryService History
+@inject PartsLinkService Parts
+@inject NavigationManager Nav
+
+<PageTitle>@(vehicle?.Nickname ?? "Carro") — ÄLGarage</PageTitle>
+
+@if (vehicle is null)
+{
+    <h1>Carro não encontrado</h1>
+    <p><a href="/garagem">← Voltar para a garagem</a></p>
+}
+else
+{
+    <div class="page-head">
+        <h1>@(string.IsNullOrWhiteSpace(vehicle.Nickname) ? DisplayName : vehicle.Nickname)</h1>
+        <a href="/garagem">← Garagem</a>
+    </div>
+
+    <section class="panel">
+        <h2>Veículo</h2>
+        <dl class="kv">
+            <dt>VIN</dt><dd>@vehicle.Vin</dd>
+            <dt>Versão</dt>
+            <dd>
+                @if (vehicle.Variant is { } va)
+                {
+                    <text>@va.ModelName @va.Trim · @va.MarketingEngine @va.EngineCode (@va.PowerHp cv) · @va.Fuel</text>
+                }
+                else { <span style="color:var(--state-due-soon)">não identificada</span> }
+            </dd>
+            @if (vehicle.Variant?.OilGrade is { } oil)
+            {
+                <dt>Óleo</dt><dd>@oil @(vehicle.Variant.OilCapacityLiters is { } l ? $"· ~{l} L" : "")</dd>
+            }
+            <dt>Km atual</dt><dd>@vehicle.CurrentOdometerKm.ToString("N0") km</dd>
+            <dt>Uso médio</dt><dd>@vehicle.AvgDailyKm km/dia</dd>
+            <dt>Compra</dt><dd>@vehicle.PurchaseDate.ToString("dd/MM/yyyy") · @vehicle.PreviousOwners dono(s) anterior(es)</dd>
+        </dl>
+    </section>
+
+    <section class="panel">
+        <h2>Manutenção</h2>
+        @if (maintenance is null || !maintenance.HasPlan)
+        {
+            <p style="color:var(--text-muted)">
+                Sem plano de manutenção (versão não identificada ou motor sem plano no catálogo).
+            </p>
+        }
+        else
+        {
+            <p style="color:var(--text-muted)">@maintenance.PlanName</p>
+            <table class="table">
+                <thead><tr><th>Item</th><th>Status</th><th>Vence (km)</th><th>Previsão</th></tr></thead>
+                <tbody>
+                    @foreach (var item in maintenance.Items)
+                    {
+                        <tr>
+                            <td>@item.ItemName<br /><small style="color:var(--text-muted)">@item.Category</small></td>
+                            <td><span class="badge" style="background:@StateColor(item.State)">@StateLabel(item.State)</span></td>
+                            <td>@(item.DueAtKm?.ToString("N0") ?? "—")</td>
+                            <td>@(item.EstimatedDueDate?.ToString("dd/MM/yyyy") ?? "—")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+
+    <section class="panel">
+        <h2>Registrar serviço</h2>
+        <EditForm Model="ServiceInput" method="post" OnValidSubmit="AddServiceAsync" FormName="add-service" class="form">
+            <DataAnnotationsValidator />
+            <div class="grid-2">
+                <label>Data <InputDate @bind-Value="ServiceInput.PerformedOn" /></label>
+                <label>Km <InputNumber @bind-Value="ServiceInput.OdometerKm" /></label>
+                <label>Oficina <InputText @bind-Value="ServiceInput.Workshop" /></label>
+                <label>Custo total <InputNumber @bind-Value="ServiceInput.TotalCost" /></label>
+            </div>
+            <label>Item de manutenção cumprido (zera o relógio)
+                <InputSelect @bind-Value="ServiceInput.MaintenanceItemKey">
+                    <option value="">— nenhum específico —</option>
+                    @if (maintenance?.Items is not null)
+                    {
+                        @foreach (var i in maintenance.Items)
+                        {
+                            <option value="@i.ItemName">@i.ItemName</option>
+                        }
+                    }
+                </InputSelect>
+            </label>
+            <label>Descrição <InputText @bind-Value="ServiceInput.Description" /></label>
+            @if (serviceError is not null)
+            {
+                <p style="color:var(--state-overdue)">@serviceError</p>
+            }
+            <button class="btn" type="submit">Salvar serviço</button>
+        </EditForm>
+
+        <h3>Histórico</h3>
+        @if (history is null || history.Count == 0)
+        {
+            <p style="color:var(--text-muted)">Nenhum serviço registrado.</p>
+        }
+        else
+        {
+            <ul class="history">
+                @foreach (var r in history)
+                {
+                    <li>
+                        <strong>@r.PerformedOn.ToString("dd/MM/yyyy")</strong> · @r.OdometerKm.ToString("N0") km
+                        @if (!string.IsNullOrWhiteSpace(r.Workshop)) { <text>· @r.Workshop</text> }
+                        @if (r.TotalCost is { } c) { <text>· R$ @c.ToString("N2")</text> }
+                        @foreach (var it in r.Items)
+                        {
+                            <div style="color:var(--text-muted)">– @it.Description @(it.MaintenanceItemKey is null ? "" : $"[{it.MaintenanceItemKey}]")</div>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+    </section>
+
+    <section class="panel">
+        <h2>Buscar peças (links)</h2>
+        <p style="color:var(--text-muted)">O app só mostra links; a compra é com você.</p>
+        <form method="get" class="form-inline">
+            <input name="q" value="@Q" placeholder="ex.: filtro de óleo Volvo V40" />
+            <button class="btn" type="submit">Buscar</button>
+        </form>
+        @if (partLinks is { Count: > 0 })
+        {
+            <ul class="links">
+                @foreach (var link in partLinks)
+                {
+                    <li><a href="@link.Url" target="_blank" rel="noopener noreferrer nofollow">@link.StoreName: @(link.Title ?? Q)</a></li>
+                }
+            </ul>
+        }
+        else if (!string.IsNullOrWhiteSpace(Q))
+        {
+            <p style="color:var(--text-muted)">Nenhum link gerado.</p>
+        }
+    </section>
+}
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    [SupplyParameterFromQuery(Name = "q")] private string? Q { get; set; }
+    [SupplyParameterFromForm(FormName = "add-service")] private AddServiceInput ServiceInput { get; set; } = new();
+
+    private VehicleDetailDto? vehicle;
+    private VehicleMaintenanceDto? maintenance;
+    private IReadOnlyList<ServiceRecordDto>? history;
+    private IReadOnlyList<PartSearchLink>? partLinks;
+    private string? serviceError;
+
+    private string DisplayName => vehicle?.Variant is { } v ? $"{v.ModelName} {v.Trim}" : "Carro (VIN não identificado)";
+
+    protected override async Task OnInitializedAsync()
+    {
+        vehicle = await Vehicles.GetAsync(Id);
+        if (vehicle is null)
+        {
+            return;
+        }
+
+        maintenance = await Maintenance.GetForVehicleAsync(Id);
+        history = await History.ListAsync(Id);
+
+        if (!string.IsNullOrWhiteSpace(Q))
+        {
+            partLinks = await Parts.SearchAsync(Q, vehicle.Vin);
+        }
+    }
+
+    private async Task AddServiceAsync()
+    {
+        serviceError = null;
+        try
+        {
+            var items = string.IsNullOrWhiteSpace(ServiceInput.Description) && string.IsNullOrWhiteSpace(ServiceInput.MaintenanceItemKey)
+                ? new List<AddServiceItemDto>()
+                : [new AddServiceItemDto(
+                    string.IsNullOrWhiteSpace(ServiceInput.Description) ? ServiceInput.MaintenanceItemKey! : ServiceInput.Description,
+                    string.IsNullOrWhiteSpace(ServiceInput.MaintenanceItemKey) ? null : ServiceInput.MaintenanceItemKey,
+                    null)];
+
+            var req = new AddServiceRecordRequest(
+                Id, ServiceInput.PerformedOn, ServiceInput.OdometerKm,
+                string.IsNullOrWhiteSpace(ServiceInput.Workshop) ? null : ServiceInput.Workshop,
+                ServiceInput.TotalCost, null, items);
+
+            await History.AddAsync(req);
+            Nav.NavigateTo($"/garagem/{Id}"); // PRG: recarrega e recalcula a manutenção
+        }
+        catch (Exception ex)
+        {
+            serviceError = ex.Message;
+        }
+    }
+
+    private static string StateColor(MaintenanceState s) => s switch
+    {
+        MaintenanceState.Overdue => "var(--state-overdue)",
+        MaintenanceState.DueSoon => "var(--state-due-soon)",
+        _ => "var(--state-ok)"
+    };
+
+    private static string StateLabel(MaintenanceState s) => s switch
+    {
+        MaintenanceState.Overdue => "Vencido",
+        MaintenanceState.DueSoon => "Próximo",
+        _ => "Em dia"
+    };
+
+    private sealed class AddServiceInput
+    {
+        public DateOnly PerformedOn { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+        [Range(0, 2_000_000)] public int OdometerKm { get; set; }
+        public string? Workshop { get; set; }
+        public decimal? TotalCost { get; set; }
+        public string? MaintenanceItemKey { get; set; }
+        public string? Description { get; set; }
+    }
+}

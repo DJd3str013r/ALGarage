@@ -1,6 +1,8 @@
 using ALGarage.Application.Abstractions;
 using ALGarage.Infrastructure.Parts;
 using ALGarage.Infrastructure.Persistence;
+using ALGarage.Infrastructure.Persistence.Repositories;
+using ALGarage.Infrastructure.Seed;
 using ALGarage.Infrastructure.Vin;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,9 +21,22 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
-        // Portas → implementações (stubs nesta fase de estruturação).
-        services.AddScoped<IVinDecoder, NhtsaVinDecoder>();
+        // Repositórios.
+        services.AddScoped<ICatalogRepository, CatalogRepository>();
+        services.AddScoped<IGarageRepository, GarageRepository>();
+
+        // Decodificação de VIN: cadeia vPIC (stub) → curado Volvo (fallback garantido).
+        services.AddScoped<IVinDecoder>(_ => new CompositeVinDecoder(
+        [
+            new NhtsaVinDecoder(),
+            new CuratedVolvoVinDecoder()
+        ]));
+
+        // Buscador de peças (links). Adicionar lojas = registrar mais provedores.
         services.AddScoped<IPartsSearchLinkProvider, MercadoLivreSearchLinkProvider>();
+
+        // Seed do catálogo curado.
+        services.AddScoped<CuratedDataSeeder>();
 
         return services;
     }

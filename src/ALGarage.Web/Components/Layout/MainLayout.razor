@@ -1,5 +1,24 @@
 @inherits LayoutComponentBase
 
+<header class="topbar">
+    <a class="brand" href="/">ÄLGarage</a>
+    <nav class="topnav">
+        <AuthorizeView>
+            <Authorized>
+                <a href="/garagem">Garagem</a>
+                <form action="/account/logout" method="post" class="inline-form">
+                    <button class="linklike" type="submit">Sair</button>
+                </form>
+            </Authorized>
+            <NotAuthorized>
+                <a href="/account/login">Entrar</a>
+                <a href="/account/register">Criar conta</a>
+            </NotAuthorized>
+        </AuthorizeView>
+        <ThemeToggle />
+    </nav>
+</header>
+
 <main class="container">
     @Body
 </main>

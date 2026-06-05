@@ -47,6 +47,7 @@ public sealed class ModelVariant : Entity
     public Guid VehicleModelId { get; set; }
     public Guid? EngineSpecId { get; set; }
     public required string Trim { get; set; }        // ex.: "R-Design"
+    public string? MarketingEngine { get; set; }     // ex.: "T5"
     public int ModelYearFrom { get; set; }
     public int ModelYearTo { get; set; }
     public string? Market { get; set; }              // ex.: "BR"

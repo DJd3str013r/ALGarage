@@ -39,4 +39,25 @@ public sealed class Vehicle : AggregateRoot
 
     /// <summary>Uso médio informado/estimado (km/dia). Base da projeção de manutenção por km.</summary>
     public double AvgDailyKm { get; private set; }
+
+    /// <summary>Liga a versão resolvida pela decodificação do VIN (ou confirmada pelo usuário).</summary>
+    public void AttachVariant(Guid modelVariantId)
+    {
+        ModelVariantId = modelVariantId;
+        Touch();
+    }
+
+    /// <summary>Atualiza o km atual (a partir de uma nova leitura de hodômetro).</summary>
+    public void UpdateCurrentOdometer(int km)
+    {
+        if (km < CurrentOdometerKm)
+        {
+            throw new ArgumentException("Nova leitura de hodômetro não pode ser menor que a atual.", nameof(km));
+        }
+
+        CurrentOdometerKm = km;
+        Touch();
+    }
+
+    private void Touch() => UpdatedAtUtc = DateTime.UtcNow;
 }

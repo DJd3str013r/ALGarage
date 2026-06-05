@@ -1,0 +1,80 @@
+@page "/account/register"
+@attribute [AllowAnonymous]
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+@using ALGarage.Infrastructure.Identity
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Nav
+
+<PageTitle>Criar conta — ÄLGarage</PageTitle>
+
+<h1>Criar conta</h1>
+
+<p style="color:var(--text-muted)">
+    Após criar a conta, o próximo passo é cadastrar seu carro pelo <strong>VIN</strong>.
+</p>
+
+<EditForm Model="Input" method="post" OnValidSubmit="RegisterUser" FormName="register" class="form">
+    <DataAnnotationsValidator />
+
+    <label>E-mail
+        <InputText @bind-Value="Input.Email" autocomplete="username" />
+    </label>
+    <label>Senha (mín. 8 caracteres)
+        <InputText type="password" @bind-Value="Input.Password" autocomplete="new-password" />
+    </label>
+    <label class="inline">
+        <InputCheckbox @bind-Value="Input.Consent" /> Concordo com o tratamento dos meus dados (LGPD)
+    </label>
+
+    @if (errors.Count > 0)
+    {
+        <ul style="color:var(--state-overdue)">
+            @foreach (var e in errors) { <li>@e</li> }
+        </ul>
+    }
+
+    <button class="btn" type="submit">Criar conta</button>
+</EditForm>
+
+<p>Já tem conta? <a href="/account/login">Entrar</a></p>
+
+@code {
+    [SupplyParameterFromForm] private RegisterInput Input { get; set; } = new();
+    private readonly List<string> errors = [];
+
+    private async Task RegisterUser()
+    {
+        errors.Clear();
+        if (!Input.Consent)
+        {
+            errors.Add("É necessário concordar com o tratamento de dados (LGPD).");
+            return;
+        }
+
+        var user = new ApplicationUser
+        {
+            UserName = Input.Email,
+            Email = Input.Email,
+            ConsentAcceptedAtUtc = DateTime.UtcNow
+        };
+
+        var result = await UserManager.CreateAsync(user, Input.Password);
+        if (!result.Succeeded)
+        {
+            errors.AddRange(result.Errors.Select(e => e.Description));
+            return;
+        }
+
+        await SignInManager.SignInAsync(user, isPersistent: false);
+        Nav.NavigateTo("/garagem/novo");
+    }
+
+    private sealed class RegisterInput
+    {
+        [Required, EmailAddress] public string Email { get; set; } = "";
+        [Required, MinLength(8)] public string Password { get; set; } = "";
+        public bool Consent { get; set; }
+    }
+}

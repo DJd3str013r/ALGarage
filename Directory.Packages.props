@@ -21,6 +21,12 @@
     <!-- Identity / Auth -->
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
 
+    <!-- DI / extensões base -->
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0" />
+
     <!-- Validação e mapeamento (alternativas livres às libs que viraram pagas) -->
     <PackageVersion Include="FluentValidation" Version="11.11.0" />
     <PackageVersion Include="Riok.Mapperly" Version="4.2.0" />

@@ -34,6 +34,21 @@ docker compose up -d --build      # no Pi, build nativo arm64
 docker buildx build --platform linux/arm64 -t algarage-web:local --load .
 ```
 
+## Migration inicial do banco (uma vez)
+
+O app aplica migrations na inicialização, mas a **migration inicial precisa ser gerada** com o SDK
+(este passo não roda no Pi sem o SDK .NET; faça num dev e versione a migration):
+
+```bash
+dotnet tool install --global dotnet-ef        # se ainda não tiver
+dotnet ef migrations add InitialCreate \
+  -p src/ALGarage.Infrastructure -s src/ALGarage.Web
+```
+
+Ao subir, o `AppDbInitializer` roda `MigrateAsync` e **semeia o catálogo do V40** automaticamente
+(idempotente). Se não houver migration, o app sobe mas registra um aviso e a garagem fica sem
+catálogo até a migration existir.
+
 ## Backup e restore do PostgreSQL
 
 ```bash

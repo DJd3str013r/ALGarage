@@ -1,0 +1,126 @@
+@page "/garagem/novo"
+@attribute [Authorize]
+@using System.ComponentModel.DataAnnotations
+@inject VehicleService Vehicles
+@inject NavigationManager Nav
+
+<PageTitle>Adicionar carro — ÄLGarage</PageTitle>
+
+<h1>Adicionar carro</h1>
+<p style="color:var(--text-muted)">
+    Informe o <strong>VIN</strong> (17 caracteres) e os dados de aquisição. Confirme a versão entre as
+    candidatas do catálogo.
+</p>
+
+<EditForm Model="Input" method="post" OnValidSubmit="Submit" FormName="add-vehicle" class="form">
+    <DataAnnotationsValidator />
+
+    <label>VIN
+        <InputText @bind-Value="Input.Vin" maxlength="17" autocomplete="off" />
+    </label>
+
+    @if (decode is not null)
+    {
+        <div class="note">
+            Decodificação: <strong>@(decode.Make ?? "?")</strong>
+            @if (decode.ModelYear is not null) { <text>· ano @decode.ModelYear</text> }
+            <text>· WMI @decode.Wmi · fonte @decode.Source</text>
+        </div>
+
+        @if (decode.CandidateVariants.Count > 0)
+        {
+            <label>Versão (confirme)
+                <InputSelect @bind-Value="Input.ModelVariantId">
+                    <option value="">— selecione —</option>
+                    @foreach (var c in decode.CandidateVariants)
+                    {
+                        <option value="@c.Id">@c.ModelName @c.Trim (@c.MarketingEngine, @c.ModelYearFrom–@c.ModelYearTo)@(c.Market is null ? "" : $" · {c.Market}")</option>
+                    }
+                </InputSelect>
+            </label>
+        }
+        else
+        {
+            <p style="color:var(--state-due-soon)">
+                Nenhuma versão do catálogo casou com o ano. Você pode cadastrar mesmo assim (ficará "não identificado").
+            </p>
+        }
+    }
+
+    <div class="grid-2">
+        <label>Apelido (opcional)
+            <InputText @bind-Value="Input.Nickname" />
+        </label>
+        <label>Data de compra
+            <InputDate @bind-Value="Input.PurchaseDate" />
+        </label>
+        <label>Donos anteriores
+            <InputNumber @bind-Value="Input.PreviousOwners" />
+        </label>
+        <label>Km na aquisição
+            <InputNumber @bind-Value="Input.OdometerAtAcquisitionKm" />
+        </label>
+        <label>Km atual
+            <InputNumber @bind-Value="Input.CurrentOdometerKm" />
+        </label>
+        <label>Uso médio (km/dia)
+            <InputNumber @bind-Value="Input.AvgDailyKm" />
+        </label>
+    </div>
+
+    @if (message is not null)
+    {
+        <p style="color:var(--state-overdue)">@message</p>
+    }
+
+    <button class="btn" type="submit">
+        @(decode is null ? "Decodificar VIN" : "Salvar carro")
+    </button>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm] private AddVehicleInput Input { get; set; } = new();
+    private VinDecodeResultDto? decode;
+    private string? message;
+
+    private async Task Submit()
+    {
+        message = null;
+        decode = await Vehicles.DecodeAsync(Input.Vin);
+
+        // 1º passo: só decodificou → mostra candidatas e pede confirmação.
+        if (Input.ModelVariantId is null && decode.CandidateVariants.Count > 0)
+        {
+            message = "Selecione a versão correspondente e salve.";
+            return;
+        }
+
+        try
+        {
+            var req = new RegisterVehicleRequest(
+                Input.Vin, Input.PurchaseDate, Input.PreviousOwners,
+                Input.OdometerAtAcquisitionKm, Input.CurrentOdometerKm, Input.AvgDailyKm,
+                string.IsNullOrWhiteSpace(Input.Nickname) ? null : Input.Nickname,
+                Input.ModelVariantId);
+
+            var id = await Vehicles.RegisterAsync(req);
+            Nav.NavigateTo($"/garagem/{id}");
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+        }
+    }
+
+    private sealed class AddVehicleInput
+    {
+        [Required, StringLength(17, MinimumLength = 11)] public string Vin { get; set; } = "";
+        public string? Nickname { get; set; }
+        public DateOnly PurchaseDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+        [Range(0, 50)] public int PreviousOwners { get; set; }
+        [Range(0, 2_000_000)] public int OdometerAtAcquisitionKm { get; set; }
+        [Range(0, 2_000_000)] public int CurrentOdometerKm { get; set; }
+        [Range(0, 2000)] public double AvgDailyKm { get; set; } = 30;
+        public Guid? ModelVariantId { get; set; }
+    }
+}

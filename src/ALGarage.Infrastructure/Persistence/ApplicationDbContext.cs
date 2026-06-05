@@ -1,21 +1,29 @@
 using ALGarage.Application.Abstractions;
 using ALGarage.Domain.Catalog;
 using ALGarage.Domain.Maintenance;
+using ALGarage.Domain.Service;
 using ALGarage.Domain.Vehicles;
+using ALGarage.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ALGarage.Infrastructure.Persistence;
 
 /// <summary>
-/// DbContext do EF Core (PostgreSQL). Esqueleto: DbSets das entidades principais para refletir o
-/// modelo de dados. Configurações detalhadas (JSONB, índices, conversões de value object como
-/// <see cref="Vin"/>) entram em IEntityTypeConfiguration por módulo nas features. Ver ADR-0003.
+/// DbContext do EF Core (PostgreSQL). Combina ASP.NET Identity (usuário com chave Guid) com o
+/// domínio do ÄLGarage. Configurações em Persistence/Configurations. Ver ADR-0003.
 /// </summary>
 public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : DbContext(options), IUnitOfWork
+    : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options), IUnitOfWork
 {
     // Garagem
     public DbSet<Vehicle> Vehicles => Set<Vehicle>();
+    public DbSet<OdometerReading> OdometerReadings => Set<OdometerReading>();
+
+    // Histórico
+    public DbSet<ServiceRecord> ServiceRecords => Set<ServiceRecord>();
+    public DbSet<ServiceItem> ServiceItems => Set<ServiceItem>();
 
     // Catálogo
     public DbSet<Brand> Brands => Set<Brand>();
@@ -30,11 +38,8 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // TODO(feature): aplicar configurações por módulo:
-        //   modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        // Inclui: conversão do value object Vin <-> string, índice único de Vin por usuário,
-        // mapeamento de SpecsJson para jsonb, etc.
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(modelBuilder); // Identity
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 
     Task<int> IUnitOfWork.SaveChangesAsync(CancellationToken ct) => SaveChangesAsync(ct);

@@ -1,0 +1,44 @@
+@page "/garagem"
+@attribute [Authorize]
+@inject VehicleService Vehicles
+
+<PageTitle>Garagem — ÄLGarage</PageTitle>
+
+<div class="page-head">
+    <h1>Minha garagem</h1>
+    <a class="btn" href="/garagem/novo">+ Adicionar carro</a>
+</div>
+
+@if (vehicles is null)
+{
+    <p>Carregando…</p>
+}
+else if (vehicles.Count == 0)
+{
+    <p style="color:var(--text-muted)">
+        Nenhum carro ainda. Cadastre seu Volvo pelo <strong>VIN</strong> para começar a acompanhar a manutenção.
+    </p>
+}
+else
+{
+    <div class="card-grid">
+        @foreach (var v in vehicles)
+        {
+            <a class="card" href="@($"/garagem/{v.Id}")">
+                <strong>@(string.IsNullOrWhiteSpace(v.Nickname) ? v.Display : v.Nickname)</strong>
+                <span style="color:var(--text-muted)">@v.Display</span>
+                <span>@v.CurrentOdometerKm.ToString("N0") km</span>
+                @if (!v.Identified)
+                {
+                    <span style="color:var(--state-due-soon)">VIN não identificado</span>
+                }
+            </a>
+        }
+    </div>
+}
+
+@code {
+    private IReadOnlyList<VehicleSummaryDto>? vehicles;
+
+    protected override async Task OnInitializedAsync() => vehicles = await Vehicles.ListAsync();
+}

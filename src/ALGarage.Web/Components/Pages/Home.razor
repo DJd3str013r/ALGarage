@@ -1,18 +1,29 @@
 @page "/"
 @using ALGarage.Web.Components.Shared
-@using Microsoft.Extensions.Localization
+@using ALGarage.Web.Resources
 @inject IStringLocalizer<SharedResource> L
 
 <PageTitle>@L["AppName"]</PageTitle>
 
-<div style="display:flex; align-items:center; justify-content:space-between; gap:1rem;">
+<div class="page-head">
     <h1>@L["AppName"]</h1>
-    <ThemeToggle />
 </div>
 
-<p>@L["HomeTagline"]</p>
+<p>Acompanhe a saúde do seu Volvo: cadastre pelo VIN e veja a manutenção prevista por tempo e por km/dia.</p>
+
+<AuthorizeView>
+    <Authorized>
+        <a class="btn" href="/garagem">Ir para a garagem</a>
+    </Authorized>
+    <NotAuthorized>
+        <p>
+            <a class="btn" href="/account/register">Criar conta</a>
+            &nbsp;
+            <a href="/account/login">Entrar</a>
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
 
 <p style="color:var(--text-muted)">
-    Idiomas: <strong>en</strong> · <strong>pt-BR</strong> (i18n configurado — ADR-0013).
-    Tema padrão: <strong>dark</strong> (ADR-0014). Documentação de decisão em <code>/docs</code>.
+    MVP (Fase 1) — catálogo curado: <strong>Volvo V40 (2012–2019)</strong>. Idiomas: en · pt-BR. Tema padrão: dark.
 </p>
