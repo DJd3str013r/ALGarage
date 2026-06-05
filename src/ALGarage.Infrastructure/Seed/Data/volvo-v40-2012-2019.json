@@ -1,151 +1,83 @@
 {
-  "schemaVersion": 1,
-  "source": "curated",
+  "schemaVersion": 2,
+  "source": "curated+volvo-manual",
   "brandScope": "Volvo",
   "modelScope": "V40 (geração II / plataforma P1), 2012–2019",
-  "disclaimer": "Dados CURADOS para o MVP. Bons o suficiente para alimentar o motor de estimativa, mas DEVEM ser validados contra o manual oficial Volvo de cada versão antes de uso definitivo. Códigos de opcionais (FactoryOption.code) são sintéticos/curados, não os códigos internos da Volvo. Intervalos de manutenção são conservadores para uso no Brasil (severo).",
+  "disclaimer": "Intervalos de manutenção ALINHADOS às recomendações oficiais da Volvo (manual do proprietário / programa de serviço VIDA), cruzados de fontes secundárias confiáveis porque o acesso direto a volvocars.com foi bloqueado (HTTP 403) neste ambiente. Graus e VOLUMES de óleo são aproximados (variam por ano/versão) — confirmar no manual da versão exata antes de uso definitivo. Códigos de opcionais (FactoryOption.code) são sintéticos/curados, não os códigos internos da Volvo.",
   "references": [
     "https://en.wikipedia.org/wiki/Volvo_V40_(2012%E2%80%932019)",
-    "https://www.volvocars.com/br/support/car/v40/",
-    "https://www.noticiasautomotivas.com.br/volvo-v40/",
-    "https://carrorac.com/oleo-motor/volvo/v40.html",
-    "https://www.auto-abc.eu/volvo-v40/"
+    "https://www.volvocars.com/uk/support/car/v40/article/4d76e576c58a3c76c0a801e801c396ac/ (óleo: grau e volume)",
+    "https://www.volvohowto.com/servicing-...-d2-d3-d4-and-d5-2-0-diesel-drive-e-engines-scheduled-plan-2013-on/ (plano diesel Drive-E)",
+    "https://autobaak.nl/en/volvo-v40/ (intervalos da correia dentada por motor)",
+    "https://www.volvov40club.com/ (VIDA: fluido de freio a cada 2 anos)",
+    "https://www.auto-abc.eu/volvo-v40/ (intervalos de serviço por ano/motor)"
   ],
 
   "brand": { "name": "Volvo", "slug": "volvo", "country": "SE" },
 
   "models": [
-    {
-      "key": "v40",
-      "name": "V40",
-      "generation": "II (P1)",
-      "bodyStyle": "Hatchback",
-      "yearsFrom": 2012,
-      "yearsTo": 2019
-    },
-    {
-      "key": "v40-cc",
-      "name": "V40 Cross Country",
-      "generation": "II (P1)",
-      "bodyStyle": "Hatchback (crossover)",
-      "yearsFrom": 2013,
-      "yearsTo": 2019
-    }
+    { "key": "v40",    "name": "V40",              "generation": "II (P1)", "bodyStyle": "Hatchback",            "yearsFrom": 2012, "yearsTo": 2019 },
+    { "key": "v40-cc", "name": "V40 Cross Country", "generation": "II (P1)", "bodyStyle": "Hatchback (crossover)", "yearsFrom": 2013, "yearsTo": 2019 }
   ],
 
-  "_comment_phases": "pre-facelift: 2012–2016 | facelift (Thor's Hammer DRL): 2016–2019. Mercado BR: importado, gasolina; diesel listado para completude global ('todas as versões').",
+  "_comment_phases": "pre-facelift: 2012–2016 | facelift (DRL 'Thor's Hammer'): 2016–2019. Mercado BR: importado, gasolina; diesel listado para completude global.",
+  "_comment_oil": "oilGrade/oilCapacityLiters = especificação Volvo aproximada por motor. Drive-E gasolina: 0W-20 (VCC RBS0-2AE). Modular 5 cilindros: 0W-30/5W-30. Diesel: 0W-30 ACEA C (low-SAPS).",
 
   "engines": [
     {
-      "code": "B4164T",
-      "family": "petrol-16-ecoboost",
-      "marketingNames": ["T3", "T4"],
-      "fuel": "Gasoline",
-      "displacementCc": 1596,
-      "powerHpVariants": [150, 180],
-      "aspiration": "Turbo",
-      "cylinders": 4,
-      "phase": "pre-facelift",
-      "yearsFrom": 2012,
-      "yearsTo": 2015,
+      "code": "B4164T", "family": "petrol-16-ecoboost", "marketingNames": ["T3", "T4"],
+      "fuel": "Gasoline", "displacementCc": 1596, "powerHpVariants": [150, 180], "aspiration": "Turbo", "cylinders": 4,
+      "phase": "pre-facelift", "yearsFrom": 2012, "yearsTo": 2015,
+      "oilGrade": "5W-30 (ACEA A5/B5)", "oilCapacityLiters": 4.1,
       "notes": "Bloco 1.6 EcoBoost (origem Ford). T3=150cv, T4=180cv."
     },
     {
-      "code": "B5204T",
-      "family": "petrol-i5-2.0",
-      "marketingNames": ["T4", "T5"],
-      "fuel": "Gasoline",
-      "displacementCc": 1999,
-      "powerHpVariants": [180],
-      "aspiration": "Turbo",
-      "cylinders": 5,
-      "phase": "pre-facelift",
-      "yearsFrom": 2013,
-      "yearsTo": 2015,
+      "code": "B5204T", "family": "petrol-i5-2.0", "marketingNames": ["T4", "T5"],
+      "fuel": "Gasoline", "displacementCc": 1999, "powerHpVariants": [180], "aspiration": "Turbo", "cylinders": 5,
+      "phase": "pre-facelift", "yearsFrom": 2013, "yearsTo": 2015,
+      "oilGrade": "0W-30 (VCC 95200377)", "oilCapacityLiters": 5.8,
       "notes": "2.0 cinco cilindros ~180cv. Base do V40 no Brasil antes de set/2015 (descontinuado na renovação)."
     },
     {
-      "code": "B5254T",
-      "family": "petrol-i5-2.5",
-      "marketingNames": ["T5"],
-      "fuel": "Gasoline",
-      "displacementCc": 2521,
-      "powerHpVariants": [254],
-      "aspiration": "Turbo",
-      "cylinders": 5,
-      "phase": "pre-facelift",
-      "yearsFrom": 2012,
-      "yearsTo": 2014,
+      "code": "B5254T", "family": "petrol-i5-2.5", "marketingNames": ["T5"],
+      "fuel": "Gasoline", "displacementCc": 2521, "powerHpVariants": [254], "aspiration": "Turbo", "cylinders": 5,
+      "phase": "pre-facelift", "yearsFrom": 2012, "yearsTo": 2014,
+      "oilGrade": "0W-30 (VCC 95200377)", "oilCapacityLiters": 5.8,
       "notes": "2.5 cinco cilindros 254cv. Topo de gama inicial; presente no Brasil nos primeiros anos."
     },
     {
-      "code": "B4154T",
-      "family": "petrol-driveE-1.5",
-      "marketingNames": ["T2", "T3"],
-      "fuel": "Gasoline",
-      "displacementCc": 1498,
-      "powerHpVariants": [122, 152],
-      "aspiration": "Turbo",
-      "cylinders": 4,
-      "phase": "both",
-      "yearsFrom": 2015,
-      "yearsTo": 2019,
+      "code": "B4154T", "family": "petrol-driveE-1.5", "marketingNames": ["T2", "T3"],
+      "fuel": "Gasoline", "displacementCc": 1498, "powerHpVariants": [122, 152], "aspiration": "Turbo", "cylinders": 4,
+      "phase": "both", "yearsFrom": 2015, "yearsTo": 2019,
+      "oilGrade": "0W-20 (VCC RBS0-2AE)", "oilCapacityLiters": 5.5,
       "notes": "Drive-E (VEA) 1.5. T2=122cv, T3=152cv (automático). No BR: T3 152cv = versão Kinetic pós-2015."
     },
     {
-      "code": "B4204T",
-      "family": "petrol-driveE-2.0",
-      "marketingNames": ["T4", "T5"],
-      "fuel": "Gasoline",
-      "displacementCc": 1969,
-      "powerHpVariants": [190, 245, 252],
-      "aspiration": "Turbo",
-      "cylinders": 4,
-      "phase": "both",
-      "yearsFrom": 2014,
-      "yearsTo": 2019,
+      "code": "B4204T", "family": "petrol-driveE-2.0", "marketingNames": ["T4", "T5"],
+      "fuel": "Gasoline", "displacementCc": 1969, "powerHpVariants": [190, 245, 252], "aspiration": "Turbo", "cylinders": 4,
+      "phase": "both", "yearsFrom": 2014, "yearsTo": 2019,
+      "oilGrade": "0W-20 (VCC RBS0-2AE)", "oilCapacityLiters": 5.2,
       "notes": "Drive-E (VEA) 2.0. T4=190cv, T5=245cv (alguns MY 252cv). Motor principal do V40 no Brasil pós-2015."
     },
     {
-      "code": "D4162T",
-      "family": "diesel-16",
-      "marketingNames": ["D2"],
-      "fuel": "Diesel",
-      "displacementCc": 1560,
-      "powerHpVariants": [115],
-      "aspiration": "Turbo",
-      "cylinders": 4,
-      "phase": "pre-facelift",
-      "yearsFrom": 2012,
-      "yearsTo": 2015,
+      "code": "D4162T", "family": "diesel-16", "marketingNames": ["D2"],
+      "fuel": "Diesel", "displacementCc": 1560, "powerHpVariants": [115], "aspiration": "Turbo", "cylinders": 4,
+      "phase": "pre-facelift", "yearsFrom": 2012, "yearsTo": 2015,
+      "oilGrade": "0W-30 (ACEA C)", "oilCapacityLiters": 3.9,
       "notes": "1.6 diesel (origem PSA/Ford). Não comercializado no Brasil."
     },
     {
-      "code": "D5204T",
-      "family": "diesel-i5-2.0",
-      "marketingNames": ["D3", "D4"],
-      "fuel": "Diesel",
-      "displacementCc": 1984,
-      "powerHpVariants": [150, 177],
-      "aspiration": "Turbo",
-      "cylinders": 5,
-      "phase": "pre-facelift",
-      "yearsFrom": 2012,
-      "yearsTo": 2015,
+      "code": "D5204T", "family": "diesel-i5-2.0", "marketingNames": ["D3", "D4"],
+      "fuel": "Diesel", "displacementCc": 1984, "powerHpVariants": [150, 177], "aspiration": "Turbo", "cylinders": 5,
+      "phase": "pre-facelift", "yearsFrom": 2012, "yearsTo": 2015,
+      "oilGrade": "0W-30 (ACEA C)", "oilCapacityLiters": 5.9,
       "notes": "2.0 cinco cilindros diesel. Não comercializado no Brasil."
     },
     {
-      "code": "D4204T",
-      "family": "diesel-driveE-2.0",
-      "marketingNames": ["D2", "D3", "D4"],
-      "fuel": "Diesel",
-      "displacementCc": 1969,
-      "powerHpVariants": [120, 150, 190],
-      "aspiration": "Turbo",
-      "cylinders": 4,
-      "phase": "both",
-      "yearsFrom": 2015,
-      "yearsTo": 2019,
+      "code": "D4204T", "family": "diesel-driveE-2.0", "marketingNames": ["D2", "D3", "D4"],
+      "fuel": "Diesel", "displacementCc": 1969, "powerHpVariants": [120, 150, 190], "aspiration": "Turbo", "cylinders": 4,
+      "phase": "both", "yearsFrom": 2015, "yearsTo": 2019,
+      "oilGrade": "0W-30 (ACEA C)", "oilCapacityLiters": 5.2,
       "notes": "Drive-E (VEA) 2.0 diesel. D2=120cv, D3=150cv, D4=190cv. Não comercializado no Brasil."
     }
   ],
@@ -153,50 +85,50 @@
   "_comment_variants": "Combinações trim × motor × fase × mercado. 'BR' = vendido no Brasil. Transmissões: MT (manual), AT (Geartronic/Powershift/Aisin). Tração: FWD; Cross Country oferecia AWD em alguns motores.",
 
   "variants": [
-    { "modelKey": "v40", "trim": "Comfort",     "engineCode": "B5204T", "marketingEngine": "T5", "modelYearFrom": 2014, "modelYearTo": 2015, "market": "BR",     "transmission": "AT", "drivetrain": "FWD", "phase": "pre-facelift" },
-    { "modelKey": "v40", "trim": "Dynamic",     "engineCode": "B5204T", "marketingEngine": "T5", "modelYearFrom": 2014, "modelYearTo": 2015, "market": "BR",     "transmission": "AT", "drivetrain": "FWD", "phase": "pre-facelift" },
-    { "modelKey": "v40", "trim": "T5 R-Design", "engineCode": "B5254T", "marketingEngine": "T5", "modelYearFrom": 2013, "modelYearTo": 2014, "market": "BR",     "transmission": "AT", "drivetrain": "FWD", "phase": "pre-facelift" },
+    { "modelKey": "v40", "trim": "Comfort",     "engineCode": "B5204T", "marketingEngine": "T5", "modelYearFrom": 2014, "modelYearTo": 2015, "market": "BR", "transmission": "AT", "drivetrain": "FWD", "phase": "pre-facelift" },
+    { "modelKey": "v40", "trim": "Dynamic",     "engineCode": "B5204T", "marketingEngine": "T5", "modelYearFrom": 2014, "modelYearTo": 2015, "market": "BR", "transmission": "AT", "drivetrain": "FWD", "phase": "pre-facelift" },
+    { "modelKey": "v40", "trim": "T5 R-Design", "engineCode": "B5254T", "marketingEngine": "T5", "modelYearFrom": 2013, "modelYearTo": 2014, "market": "BR", "transmission": "AT", "drivetrain": "FWD", "phase": "pre-facelift" },
 
-    { "modelKey": "v40", "trim": "Kinetic",     "engineCode": "B4154T", "marketingEngine": "T3", "modelYearFrom": 2016, "modelYearTo": 2019, "market": "BR",     "transmission": "AT", "drivetrain": "FWD", "phase": "both" },
-    { "modelKey": "v40", "trim": "Momentum",    "engineCode": "B4204T", "marketingEngine": "T4", "modelYearFrom": 2016, "modelYearTo": 2019, "market": "BR",     "transmission": "AT", "drivetrain": "FWD", "phase": "both" },
-    { "modelKey": "v40", "trim": "Inscription", "engineCode": "B4204T", "marketingEngine": "T5", "modelYearFrom": 2017, "modelYearTo": 2019, "market": "BR",     "transmission": "AT", "drivetrain": "FWD", "phase": "facelift" },
-    { "modelKey": "v40", "trim": "R-Design",    "engineCode": "B4204T", "marketingEngine": "T5", "modelYearFrom": 2016, "modelYearTo": 2019, "market": "BR",     "transmission": "AT", "drivetrain": "FWD", "phase": "both" },
+    { "modelKey": "v40", "trim": "Kinetic",     "engineCode": "B4154T", "marketingEngine": "T3", "modelYearFrom": 2016, "modelYearTo": 2019, "market": "BR", "transmission": "AT", "drivetrain": "FWD", "phase": "both" },
+    { "modelKey": "v40", "trim": "Momentum",    "engineCode": "B4204T", "marketingEngine": "T4", "modelYearFrom": 2016, "modelYearTo": 2019, "market": "BR", "transmission": "AT", "drivetrain": "FWD", "phase": "both" },
+    { "modelKey": "v40", "trim": "Inscription", "engineCode": "B4204T", "marketingEngine": "T5", "modelYearFrom": 2017, "modelYearTo": 2019, "market": "BR", "transmission": "AT", "drivetrain": "FWD", "phase": "facelift" },
+    { "modelKey": "v40", "trim": "R-Design",    "engineCode": "B4204T", "marketingEngine": "T5", "modelYearFrom": 2016, "modelYearTo": 2019, "market": "BR", "transmission": "AT", "drivetrain": "FWD", "phase": "both" },
 
-    { "modelKey": "v40-cc", "trim": "Cross Country T5",        "engineCode": "B4204T", "marketingEngine": "T5", "modelYearFrom": 2016, "modelYearTo": 2019, "market": "BR", "transmission": "AT", "drivetrain": "AWD", "phase": "both" },
-    { "modelKey": "v40-cc", "trim": "Cross Country Inscription","engineCode": "B4204T", "marketingEngine": "T5", "modelYearFrom": 2017, "modelYearTo": 2019, "market": "BR", "transmission": "AT", "drivetrain": "AWD", "phase": "facelift" },
+    { "modelKey": "v40-cc", "trim": "Cross Country T5",         "engineCode": "B4204T", "marketingEngine": "T5", "modelYearFrom": 2016, "modelYearTo": 2019, "market": "BR", "transmission": "AT", "drivetrain": "AWD", "phase": "both" },
+    { "modelKey": "v40-cc", "trim": "Cross Country Inscription", "engineCode": "B4204T", "marketingEngine": "T5", "modelYearFrom": 2017, "modelYearTo": 2019, "market": "BR", "transmission": "AT", "drivetrain": "AWD", "phase": "facelift" },
 
-    { "modelKey": "v40", "trim": "T2",          "engineCode": "B4154T", "marketingEngine": "T2", "modelYearFrom": 2015, "modelYearTo": 2019, "market": "EU",     "transmission": "MT", "drivetrain": "FWD", "phase": "both" },
-    { "modelKey": "v40", "trim": "T3",          "engineCode": "B4164T", "marketingEngine": "T3", "modelYearFrom": 2012, "modelYearTo": 2015, "market": "EU",     "transmission": "MT", "drivetrain": "FWD", "phase": "pre-facelift" },
-    { "modelKey": "v40", "trim": "T4",          "engineCode": "B4164T", "marketingEngine": "T4", "modelYearFrom": 2012, "modelYearTo": 2015, "market": "EU",     "transmission": "AT", "drivetrain": "FWD", "phase": "pre-facelift" },
-    { "modelKey": "v40", "trim": "D2",          "engineCode": "D4204T", "marketingEngine": "D2", "modelYearFrom": 2015, "modelYearTo": 2019, "market": "EU",     "transmission": "MT", "drivetrain": "FWD", "phase": "both" },
-    { "modelKey": "v40", "trim": "D3",          "engineCode": "D4204T", "marketingEngine": "D3", "modelYearFrom": 2015, "modelYearTo": 2019, "market": "EU",     "transmission": "AT", "drivetrain": "FWD", "phase": "both" },
-    { "modelKey": "v40", "trim": "D4",          "engineCode": "D4204T", "marketingEngine": "D4", "modelYearFrom": 2015, "modelYearTo": 2019, "market": "EU",     "transmission": "AT", "drivetrain": "FWD", "phase": "both" }
+    { "modelKey": "v40", "trim": "T2", "engineCode": "B4154T", "marketingEngine": "T2", "modelYearFrom": 2015, "modelYearTo": 2019, "market": "EU", "transmission": "MT", "drivetrain": "FWD", "phase": "both" },
+    { "modelKey": "v40", "trim": "T3", "engineCode": "B4164T", "marketingEngine": "T3", "modelYearFrom": 2012, "modelYearTo": 2015, "market": "EU", "transmission": "MT", "drivetrain": "FWD", "phase": "pre-facelift" },
+    { "modelKey": "v40", "trim": "T4", "engineCode": "B4164T", "marketingEngine": "T4", "modelYearFrom": 2012, "modelYearTo": 2015, "market": "EU", "transmission": "AT", "drivetrain": "FWD", "phase": "pre-facelift" },
+    { "modelKey": "v40", "trim": "D2", "engineCode": "D4204T", "marketingEngine": "D2", "modelYearFrom": 2015, "modelYearTo": 2019, "market": "EU", "transmission": "MT", "drivetrain": "FWD", "phase": "both" },
+    { "modelKey": "v40", "trim": "D3", "engineCode": "D4204T", "marketingEngine": "D3", "modelYearFrom": 2015, "modelYearTo": 2019, "market": "EU", "transmission": "AT", "drivetrain": "FWD", "phase": "both" },
+    { "modelKey": "v40", "trim": "D4", "engineCode": "D4204T", "marketingEngine": "D4", "modelYearFrom": 2015, "modelYearTo": 2019, "market": "EU", "transmission": "AT", "drivetrain": "FWD", "phase": "both" }
   ],
 
-  "_comment_options": "Extras/opcionais e equipamentos relevantes. 'code' é curado (sintético). 'standardOn' indica trims onde costuma ser de série no BR.",
+  "_comment_options": "Extras/opcionais e equipamentos relevantes. 'code' é curado (sintético). 'standard' indica itens de série marcantes.",
 
   "factoryOptions": [
-    { "code": "SAF-CITYSAFETY",   "category": "Segurança",   "name": "City Safety",                       "description": "Frenagem autônoma de emergência em baixa velocidade.", "standard": true },
-    { "code": "SAF-PEDAIRBAG",    "category": "Segurança",   "name": "Airbag para pedestres",             "description": "Airbag externo sob o capô — recurso marcante do V40.", "standard": true },
-    { "code": "SAF-BLIS",         "category": "Segurança",   "name": "BLIS (ponto cego)",                 "description": "Alerta de ponto cego (Blind Spot Information System)." },
-    { "code": "SAF-DRIVERSUP",    "category": "Segurança",   "name": "Pacote Driver Support",             "description": "Adaptive Cruise Control, alerta de colisão, leitura de placas." },
-    { "code": "LGT-XENON",        "category": "Iluminação",  "name": "Faróis Xenon / Active Bending",     "description": "Faróis de xenônio com curva ativa." },
-    { "code": "LGT-THORHAMMER",   "category": "Iluminação",  "name": "DRL 'Thor's Hammer' (facelift)",    "description": "Luzes diurnas em LED do facelift 2016+." },
-    { "code": "COM-PANO",         "category": "Conforto",    "name": "Teto solar panorâmico",             "description": "Teto de vidro panorâmico fixo/abrível." },
-    { "code": "COM-LEATHER",      "category": "Conforto",    "name": "Bancos em couro",                   "description": "Revestimento em couro." },
-    { "code": "COM-HEATSEAT",     "category": "Conforto",    "name": "Bancos dianteiros aquecidos",       "description": "Aquecimento dos bancos dianteiros." },
-    { "code": "COM-POWERSEAT",    "category": "Conforto",    "name": "Banco do motorista elétrico",       "description": "Ajuste elétrico com memória." },
-    { "code": "INF-SENSUS",       "category": "Infotenimento","name": "Sensus Connect + Navegação",       "description": "Central multimídia com navegação." },
-    { "code": "INF-HARMANK",      "category": "Infotenimento","name": "Som Harman Kardon premium",        "description": "Sistema de áudio premium." },
-    { "code": "INF-DIGCLUSTER",   "category": "Infotenimento","name": "Painel digital adaptativo",        "description": "Cluster digital de instrumentos." },
-    { "code": "PRK-CAMERA",       "category": "Conveniência","name": "Câmera de ré + sensores",          "description": "Park Assist com câmera traseira." },
-    { "code": "PRK-AUTOPARK",     "category": "Conveniência","name": "Estacionamento automático",         "description": "Park Assist Pilot (assistente de baliza)." },
-    { "code": "KEY-KEYLESS",      "category": "Conveniência","name": "Entrada e partida sem chave",       "description": "Keyless entry/start." },
-    { "code": "WHL-17",           "category": "Rodas",       "name": "Rodas de liga 17\"",                "description": "Rodas de liga leve 17 polegadas." },
-    { "code": "WHL-18",           "category": "Rodas",       "name": "Rodas de liga 18\"",                "description": "Rodas de liga leve 18 polegadas (R-Design)." }
+    { "code": "SAF-CITYSAFETY", "category": "Segurança",    "name": "City Safety",                    "description": "Frenagem autônoma de emergência em baixa velocidade.", "standard": true },
+    { "code": "SAF-PEDAIRBAG",  "category": "Segurança",    "name": "Airbag para pedestres",          "description": "Airbag externo sob o capô — recurso marcante do V40.", "standard": true },
+    { "code": "SAF-BLIS",       "category": "Segurança",    "name": "BLIS (ponto cego)",              "description": "Alerta de ponto cego (Blind Spot Information System)." },
+    { "code": "SAF-DRIVERSUP",  "category": "Segurança",    "name": "Pacote Driver Support",          "description": "Adaptive Cruise Control, alerta de colisão, leitura de placas." },
+    { "code": "LGT-XENON",      "category": "Iluminação",   "name": "Faróis Xenon / Active Bending",  "description": "Faróis de xenônio com curva ativa." },
+    { "code": "LGT-THORHAMMER", "category": "Iluminação",   "name": "DRL 'Thor's Hammer' (facelift)", "description": "Luzes diurnas em LED do facelift 2016+." },
+    { "code": "COM-PANO",       "category": "Conforto",     "name": "Teto solar panorâmico",          "description": "Teto de vidro panorâmico fixo/abrível." },
+    { "code": "COM-LEATHER",    "category": "Conforto",     "name": "Bancos em couro",                "description": "Revestimento em couro." },
+    { "code": "COM-HEATSEAT",   "category": "Conforto",     "name": "Bancos dianteiros aquecidos",    "description": "Aquecimento dos bancos dianteiros." },
+    { "code": "COM-POWERSEAT",  "category": "Conforto",     "name": "Banco do motorista elétrico",    "description": "Ajuste elétrico com memória." },
+    { "code": "INF-SENSUS",     "category": "Infotenimento","name": "Sensus Connect + Navegação",     "description": "Central multimídia com navegação." },
+    { "code": "INF-HARMANK",    "category": "Infotenimento","name": "Som Harman Kardon premium",      "description": "Sistema de áudio premium." },
+    { "code": "INF-DIGCLUSTER", "category": "Infotenimento","name": "Painel digital adaptativo",      "description": "Cluster digital de instrumentos." },
+    { "code": "PRK-CAMERA",     "category": "Conveniência", "name": "Câmera de ré + sensores",        "description": "Park Assist com câmera traseira." },
+    { "code": "PRK-AUTOPARK",   "category": "Conveniência", "name": "Estacionamento automático",      "description": "Park Assist Pilot (assistente de baliza)." },
+    { "code": "KEY-KEYLESS",    "category": "Conveniência", "name": "Entrada e partida sem chave",    "description": "Keyless entry/start." },
+    { "code": "WHL-17",         "category": "Rodas",        "name": "Rodas de liga 17\"",             "description": "Rodas de liga leve 17 polegadas." },
+    { "code": "WHL-18",         "category": "Rodas",        "name": "Rodas de liga 18\"",             "description": "Rodas de liga leve 18 polegadas (R-Design)." }
   ],
 
-  "_comment_maintenance": "Itens de manutenção por FAMÍLIA de motor. intervalKm e/ou intervalMonths; whicheverFirst=true quando vale o que vier primeiro. Valores conservadores p/ Brasil. partHint ajuda o buscador de peças (links). null = não se aplica/baseado em desgaste.",
+  "_comment_maintenance": "Itens por FAMÍLIA de motor, ALINHADOS ao manual/VIDA da Volvo. intervalKm e/ou intervalMonths; whicheverFirst=true quando vale o que vier primeiro. partHint alimenta o buscador de peças (links). null = não se aplica / baseado em desgaste.",
 
   "maintenancePlans": [
     {
@@ -204,16 +136,16 @@
       "appliesToFamilies": ["petrol-driveE-1.5", "petrol-driveE-2.0"],
       "name": "Plano de manutenção — Drive-E gasolina (1.5/2.0)",
       "items": [
-        { "name": "Troca de óleo e filtro de óleo", "category": "Óleo",          "intervalKm": 10000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "óleo 0W-20 API SN + filtro de óleo Volvo V40", "notes": "Capacidade ~5,9 L (2.0) / ~5,5 L (1.5). Especificação 0W-20 (VCC RBS0-2AE)." },
-        { "name": "Filtro de cabine (pólen)",        "category": "Filtros",       "intervalKm": 15000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": null },
-        { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 30000, "intervalMonths": 24, "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 Drive-E", "notes": null },
-        { "name": "Velas de ignição",                "category": "Ignição",       "intervalKm": 60000, "intervalMonths": 48, "whicheverFirst": true,  "partHint": "velas de ignição Volvo V40 T4 T5 Drive-E", "notes": "Motor turbo — não estender o intervalo." },
-        { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,  "intervalMonths": 24, "whicheverFirst": false, "partHint": "fluido de freio DOT 4", "notes": "Higroscópico — troca por tempo." },
-        { "name": "Líquido de arrefecimento",        "category": "Arrefecimento", "intervalKm": 240000,"intervalMonths": 120,"whicheverFirst": true,  "partHint": "aditivo radiador Volvo (long life)", "notes": "Long-life; primeira troca por volta de 10 anos." },
-        { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 120000,"intervalMonths": 96, "whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 Drive-E", "notes": "Drive-E usa correia dentada (não corrente)." },
-        { "name": "Fluido da transmissão automática","category": "Transmissão",   "intervalKm": 120000,"intervalMonths": 120,"whicheverFirst": true,  "partHint": "óleo câmbio automático Aisin/Geartronic Volvo", "notes": "Verificar tipo (AW TG-81SC)." },
-        { "name": "Óleo do acoplamento Haldex (AWD)","category": "Transmissão",   "intervalKm": 60000, "intervalMonths": 36, "whicheverFirst": true,  "partHint": "óleo Haldex Volvo AWD", "notes": "SOMENTE versões AWD (ex.: Cross Country)." },
-        { "name": "Inspeção de pastilhas/discos de freio","category": "Freios",   "intervalKm": null,  "intervalMonths": 12, "whicheverFirst": false, "partHint": "pastilha de freio Volvo V40", "notes": "Baseado em desgaste — inspeção periódica." }
+        { "name": "Troca de óleo e filtro de óleo",      "category": "Óleo",          "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "óleo 0W-20 + filtro de óleo Volvo V40 Drive-E", "notes": "Volvo: 20.000 km ou 12 meses (o que vier primeiro). Grau/volume por motor (EngineSpec): 0W-20. O programa Volvo BR costumava oferecer revisão a cada 10.000 km." },
+        { "name": "Filtro de cabine (pólen)",            "category": "Filtros",       "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": "Volvo troca tipicamente a cada serviço anual." },
+        { "name": "Filtro de ar do motor",               "category": "Filtros",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 Drive-E", "notes": "Volvo inspeciona a cada serviço; substituição por condição (~60.000 km / 48 meses)." },
+        { "name": "Velas de ignição",                    "category": "Ignição",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "velas de ignição Volvo V40 T4 T5 Drive-E", "notes": "Intervalo Volvo ~60.000 km. Motor turbo — não estender." },
+        { "name": "Fluido de freio",                     "category": "Freios",        "intervalKm": null,   "intervalMonths": 24,  "whicheverFirst": false, "partHint": "fluido de freio DOT 4 LV", "notes": "VIDA: a cada 2 anos (anual em uso úmido/montanha)." },
+        { "name": "Líquido de arrefecimento",            "category": "Arrefecimento", "intervalKm": 240000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "aditivo radiador Volvo (long life)", "notes": "Volvo: líquido long-life; sem troca regular em uso normal. Verificar nível/condição." },
+        { "name": "Correia dentada (sincronismo)",       "category": "Distribuição",  "intervalKm": 120000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 Drive-E", "notes": "Volvo: 120.000 km OU no máx. 10 anos. Drive-E usa correia (não corrente)." },
+        { "name": "Fluido da transmissão automática",    "category": "Transmissão",   "intervalKm": 120000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "óleo câmbio automático Aisin TG-81SC Volvo", "notes": "Volvo trata como 'fill for life'; troca preventiva ~120.000 km recomendada." },
+        { "name": "Óleo do acoplamento Haldex (AWD)",    "category": "Transmissão",   "intervalKm": 60000,  "intervalMonths": 36,  "whicheverFirst": true,  "partHint": "óleo Haldex Volvo AWD", "notes": "SOMENTE versões AWD (ex.: Cross Country)." },
+        { "name": "Inspeção de pastilhas/discos de freio","category": "Freios",       "intervalKm": null,   "intervalMonths": 12,  "whicheverFirst": false, "partHint": "pastilha de freio Volvo V40", "notes": "Baseado em desgaste — inspeção a cada serviço." }
       ]
     },
     {
@@ -221,14 +153,14 @@
       "appliesToFamilies": ["petrol-i5-2.0", "petrol-i5-2.5"],
       "name": "Plano de manutenção — gasolina 5 cilindros (2.0/2.5)",
       "items": [
-        { "name": "Troca de óleo e filtro de óleo", "category": "Óleo",          "intervalKm": 10000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "óleo 0W-30/5W-30 + filtro de óleo Volvo V40 2.5 T5", "notes": "Capacidade ~5,8 L. Verificar grau no manual (0W-30/5W-30)." },
-        { "name": "Filtro de cabine (pólen)",        "category": "Filtros",       "intervalKm": 15000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": null },
-        { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 30000, "intervalMonths": 24, "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 2.5", "notes": null },
-        { "name": "Velas de ignição",                "category": "Ignição",       "intervalKm": 60000, "intervalMonths": 48, "whicheverFirst": true,  "partHint": "velas de ignição Volvo V40 T5 2.5", "notes": null },
-        { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,  "intervalMonths": 24, "whicheverFirst": false, "partHint": "fluido de freio DOT 4", "notes": null },
-        { "name": "Líquido de arrefecimento",        "category": "Arrefecimento", "intervalKm": 240000,"intervalMonths": 120,"whicheverFirst": true,  "partHint": "aditivo radiador Volvo", "notes": null },
-        { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 180000,"intervalMonths": 120,"whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 2.5 cinco cilindros", "notes": "Motor 'white block' usa correia dentada; verificar intervalo exato no manual." },
-        { "name": "Fluido da transmissão automática","category": "Transmissão",   "intervalKm": 120000,"intervalMonths": 120,"whicheverFirst": true,  "partHint": "óleo câmbio automático Volvo Geartronic", "notes": null }
+        { "name": "Troca de óleo e filtro de óleo", "category": "Óleo",          "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "óleo 0W-30 + filtro de óleo Volvo V40 2.5 T5", "notes": "Grau/volume por motor (EngineSpec): 0W-30, ~5,8 L." },
+        { "name": "Filtro de cabine (pólen)",        "category": "Filtros",       "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": null },
+        { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 2.5", "notes": null },
+        { "name": "Velas de ignição",                "category": "Ignição",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "velas de ignição Volvo V40 T5 2.5", "notes": null },
+        { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,   "intervalMonths": 24,  "whicheverFirst": false, "partHint": "fluido de freio DOT 4 LV", "notes": "VIDA: a cada 2 anos." },
+        { "name": "Líquido de arrefecimento",        "category": "Arrefecimento", "intervalKm": 240000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "aditivo radiador Volvo", "notes": null },
+        { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 180000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 2.5 cinco cilindros", "notes": "Motor 'white block' usa correia; ~10 anos. Confirmar km exato por ano no manual." },
+        { "name": "Fluido da transmissão automática","category": "Transmissão",   "intervalKm": 120000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "óleo câmbio automático Volvo Geartronic", "notes": null }
       ]
     },
     {
@@ -236,12 +168,12 @@
       "appliesToFamilies": ["petrol-16-ecoboost"],
       "name": "Plano de manutenção — gasolina 1.6 turbo (EcoBoost)",
       "items": [
-        { "name": "Troca de óleo e filtro de óleo", "category": "Óleo",          "intervalKm": 10000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "óleo 5W-30 + filtro de óleo Volvo V40 1.6", "notes": "Bloco de origem Ford 1.6." },
-        { "name": "Filtro de cabine (pólen)",        "category": "Filtros",       "intervalKm": 15000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": null },
-        { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 30000, "intervalMonths": 24, "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 1.6", "notes": null },
-        { "name": "Velas de ignição",                "category": "Ignição",       "intervalKm": 60000, "intervalMonths": 48, "whicheverFirst": true,  "partHint": "velas de ignição Volvo V40 1.6 turbo", "notes": null },
-        { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 120000,"intervalMonths": 120,"whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 1.6 EcoBoost", "notes": "1.6 EcoBoost usa correia dentada." },
-        { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,  "intervalMonths": 24, "whicheverFirst": false, "partHint": "fluido de freio DOT 4", "notes": null }
+        { "name": "Troca de óleo e filtro de óleo", "category": "Óleo",          "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "óleo 5W-30 + filtro de óleo Volvo V40 1.6", "notes": "Bloco de origem Ford 1.6. Grau/volume (EngineSpec): 5W-30, ~4,1 L." },
+        { "name": "Filtro de cabine (pólen)",        "category": "Filtros",       "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": null },
+        { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 1.6", "notes": null },
+        { "name": "Velas de ignição",                "category": "Ignição",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "velas de ignição Volvo V40 1.6 turbo", "notes": null },
+        { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 120000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 1.6 EcoBoost", "notes": "1.6 EcoBoost usa correia dentada; ~10 anos." },
+        { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,   "intervalMonths": 24,  "whicheverFirst": false, "partHint": "fluido de freio DOT 4 LV", "notes": "VIDA: a cada 2 anos." }
       ]
     },
     {
@@ -249,12 +181,12 @@
       "appliesToFamilies": ["diesel-driveE-2.0"],
       "name": "Plano de manutenção — Drive-E diesel 2.0 (D2/D3/D4)",
       "items": [
-        { "name": "Troca de óleo e filtro de óleo", "category": "Óleo",          "intervalKm": 15000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "óleo 0W-30 ACEA C + filtro de óleo Volvo V40 diesel", "notes": "Verificar grau low-SAPS no manual." },
-        { "name": "Filtro de combustível (diesel)",  "category": "Filtros",       "intervalKm": 60000, "intervalMonths": 48, "whicheverFirst": true,  "partHint": "filtro de combustível Volvo V40 diesel", "notes": "Específico de diesel." },
-        { "name": "Filtro de cabine (pólen)",        "category": "Filtros",       "intervalKm": 15000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": null },
-        { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 30000, "intervalMonths": 24, "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 diesel", "notes": null },
-        { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,  "intervalMonths": 24, "whicheverFirst": false, "partHint": "fluido de freio DOT 4", "notes": null },
-        { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 180000,"intervalMonths": 120,"whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 diesel Drive-E", "notes": null }
+        { "name": "Troca de óleo e filtro de óleo", "category": "Óleo",          "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "óleo 0W-30 ACEA C + filtro de óleo Volvo V40 diesel", "notes": "Grau/volume (EngineSpec): 0W-30 low-SAPS, ~5,2 L. Algumas fontes citam até 30.000 km/ano." },
+        { "name": "Filtro de combustível (diesel)",  "category": "Filtros",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "filtro de combustível Volvo V40 diesel", "notes": "Específico de diesel." },
+        { "name": "Filtro de cabine (pólen)",        "category": "Filtros",       "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": null },
+        { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 diesel", "notes": null },
+        { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,   "intervalMonths": 24,  "whicheverFirst": false, "partHint": "fluido de freio DOT 4 LV", "notes": "VIDA: a cada 2 anos." },
+        { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 180000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 diesel Drive-E", "notes": "D3/D4: 180.000 km ou máx. 10 anos. D2: 140.000 km." }
       ]
     },
     {
@@ -262,12 +194,12 @@
       "appliesToFamilies": ["diesel-16", "diesel-i5-2.0"],
       "name": "Plano de manutenção — diesel pré-facelift (1.6 / 2.0 cinco cilindros)",
       "items": [
-        { "name": "Troca de óleo e filtro de óleo", "category": "Óleo",          "intervalKm": 15000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "óleo + filtro de óleo Volvo V40 diesel", "notes": null },
-        { "name": "Filtro de combustível (diesel)",  "category": "Filtros",       "intervalKm": 60000, "intervalMonths": 48, "whicheverFirst": true,  "partHint": "filtro de combustível Volvo V40 diesel", "notes": null },
-        { "name": "Filtro de cabine (pólen)",        "category": "Filtros",       "intervalKm": 15000, "intervalMonths": 12, "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": null },
-        { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 30000, "intervalMonths": 24, "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 diesel", "notes": null },
-        { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 180000,"intervalMonths": 120,"whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 diesel cinco cilindros", "notes": null },
-        { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,  "intervalMonths": 24, "whicheverFirst": false, "partHint": "fluido de freio DOT 4", "notes": null }
+        { "name": "Troca de óleo e filtro de óleo", "category": "Óleo",          "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "óleo + filtro de óleo Volvo V40 diesel", "notes": "Grau/volume por motor (EngineSpec)." },
+        { "name": "Filtro de combustível (diesel)",  "category": "Filtros",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "filtro de combustível Volvo V40 diesel", "notes": null },
+        { "name": "Filtro de cabine (pólen)",        "category": "Filtros",       "intervalKm": 20000,  "intervalMonths": 12,  "whicheverFirst": true,  "partHint": "filtro de cabine Volvo V40", "notes": null },
+        { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 diesel", "notes": null },
+        { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 140000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 diesel", "notes": "1.6 diesel: 140.000 km / máx. 10 anos. 2.0 cinco cilindros: confirmar (~180.000 km)." },
+        { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,   "intervalMonths": 24,  "whicheverFirst": false, "partHint": "fluido de freio DOT 4 LV", "notes": "VIDA: a cada 2 anos." }
       ]
     }
   ]

@@ -35,6 +35,8 @@ public sealed record EngineSeed(
     string Phase,
     int YearsFrom,
     int YearsTo,
+    string? OilGrade,
+    double? OilCapacityLiters,
     string? Notes);
 
 public sealed record VariantSeed(

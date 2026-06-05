@@ -55,7 +55,7 @@ serão definidos nas migrations. As entidades estão refletidas como classes-esq
 | **Brand** | `Id`, `Name`, `Slug` | Volvo é o primeiro registro. Cidadã de 1ª classe p/ multi-marca. |
 | **VehicleModel** | `Id`, `BrandId`, `Name`, `Generation`, `BodyStyle` | Ex.: V40, geração II (P1). |
 | **ModelVariant** | `Id`, `VehicleModelId`, `EngineSpecId?`, `Trim`, `ModelYearFrom`, `ModelYearTo`, `Market`, `Transmission`, `Drivetrain`, `SpecsJson (JSONB)` | A "versão" resolvida do VIN. **Referencia** um motor. `SpecsJson` guarda specs heterogêneas. |
-| **EngineSpec** | `Id`, `BrandId`, `Code`, `Family`, `FuelType`, `DisplacementCc`, `PowerHp`, `Cylinders`, `Aspiration` | Motor **compartilhado** por várias versões (um motor equipa vários trims/anos). `Family` liga ao plano de manutenção. |
+| **EngineSpec** | `Id`, `BrandId`, `Code`, `Family`, `FuelType`, `DisplacementCc`, `PowerHp`, `Cylinders`, `Aspiration`, `OilGrade?`, `OilCapacityLiters?` | Motor **compartilhado** por várias versões (um motor equipa vários trims/anos). `Family` liga ao plano de manutenção; `OilGrade`/`OilCapacityLiters` vêm do manual Volvo. |
 | **FactoryOption** | `Id`, `VehicleModelId`, `Code`, `Category`, `Name`, `Description`, `IsStandard` | Opcionais/extras de fábrica. Pode também viver em `SpecsJson`. |
 
 > **Refinamento (jun/2026):** ao curar o dataset do V40, ficou claro que um **motor é compartilhado**

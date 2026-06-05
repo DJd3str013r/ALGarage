@@ -35,6 +35,10 @@ public sealed class EngineSpec : Entity
     public int PowerHp { get; set; }
     public int Cylinders { get; set; }
     public Aspiration Aspiration { get; set; }
+
+    /// <summary>Especificação de óleo recomendada pela Volvo (ex.: "0W-20 (VCC RBS0-2AE)").</summary>
+    public string? OilGrade { get; set; }
+    public double? OilCapacityLiters { get; set; }
 }
 
 /// <summary>A "versão" do veículo, resolvida pela decodificação do VIN. Referencia um motor.</summary>

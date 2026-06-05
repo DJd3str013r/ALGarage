@@ -6,7 +6,8 @@ Profundidade num único modelo antes de ampliar.
 
 - **Arquivo:** [`src/ALGarage.Infrastructure/Seed/Data/volvo-v40-2012-2019.json`](../src/ALGarage.Infrastructure/Seed/Data/volvo-v40-2012-2019.json)
 - **Loader (código real):** [`Seed/CuratedDatasetLoader.cs`](../src/ALGarage.Infrastructure/Seed/CuratedDatasetLoader.cs)
-- **Origem dos dados:** `curated` (curado manualmente) — ver disclaimer abaixo.
+- **Origem dos dados:** `curated+volvo-manual` (schema v2) — intervalos **alinhados ao manual/VIDA da
+  Volvo**; graus/volumes de óleo por motor. Ver disclaimer abaixo.
 
 ## Por que um dataset curado (e não uma API)
 
@@ -39,6 +40,34 @@ maintenancePlans[].items[] → MaintenancePlan + MaintenanceItem  (por EngineFam
 
 Esse dataset motivou um **refinamento do modelo** (ver [`04-modelo-de-dados.md`](04-modelo-de-dados.md)):
 o motor virou entidade compartilhada e o plano de manutenção passou a se ligar à **família de motor**.
+O `EngineSpec` ganhou ainda `OilGrade` e `OilCapacityLiters`.
+
+## Intervalos oficiais (resumo, gasolina Drive-E)
+
+Valores alinhados ao manual do proprietário / programa VIDA da Volvo (o que vier primeiro):
+
+| Item | km | Tempo | Observação |
+|---|---|---|---|
+| Óleo + filtro de óleo | 20.000 | 12 meses | Programa Volvo BR historicamente oferecia revisão a cada 10.000 km |
+| Filtro de cabine | 20.000 | 12 meses | Tipicamente a cada serviço anual |
+| Filtro de ar | ~60.000 | 48 meses | Volvo inspeciona a cada serviço; troca por condição |
+| Velas de ignição | 60.000 | 48 meses | — |
+| Fluido de freio | — | 24 meses | VIDA: 2 anos (1 ano em uso úmido/montanha) |
+| Líquido de arrefecimento | 240.000 | 120 meses | Long-life; sem troca regular em uso normal |
+| **Correia dentada** | 120.000 | 120 meses (10 anos) | Diesel D3/D4 e 5-cil: 180.000; diesel D2: 140.000 |
+| Fluido transmissão (Aisin) | ~120.000 | — | Volvo: "fill for life"; troca preventiva recomendada |
+| Óleo Haldex (AWD) | 60.000 | 36 meses | Só Cross Country / AWD |
+
+### Óleo por motor (grau / volume aprox.)
+
+| Motor | Grau | Volume |
+|---|---|---|
+| B4204T (Drive-E 2.0, T4/T5) | 0W-20 (VCC RBS0-2AE) | ~5,2 L |
+| B4154T (Drive-E 1.5, T2/T3) | 0W-20 (VCC RBS0-2AE) | ~5,5 L |
+| B5254T / B5204T (5-cil 2.5/2.0) | 0W-30 (VCC 95200377) | ~5,8 L |
+| B4164T (1.6 EcoBoost) | 5W-30 (ACEA A5/B5) | ~4,1 L |
+| D4204T / D5204T (diesel 2.0) | 0W-30 (ACEA C) | ~5,2–5,9 L |
+| D4162T (diesel 1.6) | 0W-30 (ACEA C) | ~3,9 L |
 
 ## Como usar (quando o banco existir)
 
@@ -53,21 +82,28 @@ da Fase 1 — o esqueleto não cria o banco ainda.
 
 ## ⚠️ Disclaimer de qualidade
 
-- Dados **curados**, bons para alimentar a estimativa, mas que **devem ser validados contra o manual
-  oficial Volvo** de cada versão antes de uso definitivo.
-- **Intervalos de manutenção são conservadores** para uso no Brasil (condição severa). Ex.: óleo a
-  cada **10.000 km / 12 meses** (a Volvo BR oferece revisão de 10 mil km), o que vier primeiro —
-  mesmo que o manual europeu cite intervalos maiores.
+- **Schema v2:** os intervalos foram **alinhados às recomendações oficiais da Volvo** (manual do
+  proprietário / programa de serviço VIDA), substituindo os palpites conservadores da v1.
+- **Acesso direto bloqueado:** `volvocars.com` (e agregadores) retornaram **HTTP 403** ao fetch neste
+  ambiente, então os valores foram **cruzados de fontes secundárias confiáveis** que reproduzem o
+  manual/VIDA (ver fontes). **Não fazemos scraping** (ADR-0007).
+- **Volumes de óleo são aproximados** (variam por ano/versão) — confirmar no manual da versão exata.
 - **Códigos de opcionais (`FactoryOption.code`) são sintéticos/curados**, não os códigos internos da
   Volvo.
-- Pontos a confirmar com a equipe / manual: intervalo exato da **correia dentada** por motor; tipo
-  de **fluido da transmissão** (Aisin TG-81SC); grau de óleo do **2.5 cinco cilindros**; lineup
-  **BR pré-2015** (nomes Comfort/Dynamic e o 2.0 cinco cilindros 180cv).
+- Pontos que ainda valem confirmar contra o manual da versão: km exato da **correia dentada** do
+  **2.5/2.0 cinco cilindros**; intervalo de **óleo do diesel** (fontes citam 20.000 e 30.000 km);
+  lineup **BR pré-2015** (nomes Comfort/Dynamic e o 2.0 cinco cilindros 180cv).
 
 ## Fontes consultadas
 
 - Volvo V40 (2012–2019) — Wikipedia: <https://en.wikipedia.org/wiki/Volvo_V40_(2012%E2%80%932019)>
-- Volvo Support BR (V40): <https://www.volvocars.com/br/support/car/v40/>
-- Notícias Automotivas (lineup BR): <https://www.noticiasautomotivas.com.br/volvo-v40/>
-- Óleo/capacidade: <https://carrorac.com/oleo-motor/volvo/v40.html>
-- Intervalos de manutenção: <https://www.auto-abc.eu/volvo-v40/>
+- Óleo (grau e volume) — Volvo Support: <https://www.volvocars.com/uk/support/car/v40/article/4d76e576c58a3c76c0a801e801c396ac/>
+- Plano de serviço diesel Drive-E — VolvoHowTo: <https://www.volvohowto.com/>
+- Intervalos da correia dentada por motor — Autobaak: <https://autobaak.nl/en/volvo-v40/>
+- VIDA (fluido de freio a cada 2 anos) — Volvo V40 Club: <https://www.volvov40club.com/>
+- Intervalos de serviço por ano/motor — Auto-ABC: <https://www.auto-abc.eu/volvo-v40/>
+- Lineup BR: <https://www.noticiasautomotivas.com.br/volvo-v40/>
+
+> Nota: `volvocars.com` e os agregadores responderam **403** ao acesso automatizado neste ambiente;
+> os números acima foram consolidados a partir dos resumos de busca dessas fontes (que reproduzem o
+> manual/VIDA), sem raspagem de conteúdo.
