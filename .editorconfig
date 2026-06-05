@@ -23,3 +23,11 @@ indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
+
+# Código gerado pelo EF Core (migrations / model snapshot): não aplicar regras de
+# estilo nem tratá-las como erro (ex.: IDE0161 namespace file-scoped).
+[**/Migrations/*.cs]
+generated_code = true
+dotnet_diagnostic.IDE0161.severity = none
+dotnet_diagnostic.IDE0005.severity = none
+dotnet_analyzer_diagnostic.severity = none
