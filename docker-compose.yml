@@ -1,0 +1,46 @@
+# =====================================================================================
+# ÄLGarage — stack local para a equipe (Raspberry Pi / ARM64).
+# Sobe site + PostgreSQL. Pensado para rodar de SSD/USB, NÃO do cartão SD.
+#
+#   docker compose up -d
+#
+# Segredos: copie .env.example para .env e ajuste. NUNCA versione o .env.
+# Dados do Postgres ficam num volume nomeado; aponte-o para o SSD via daemon.json
+# ("data-root") ou bind-mount em /mnt/ssd/... (ver docs/08-implantacao-local.md).
+# =====================================================================================
+
+services:
+  db:
+    image: postgres:17  # arm64 oficial disponível
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-algarage}
+      POSTGRES_USER: ${POSTGRES_USER:-algarage}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina no .env}
+    volumes:
+      - algarage_pgdata:/var/lib/postgresql/data
+      - ./backups:/backups
+    ports:
+      - "5432:5432"  # exponha só na LAN; remova se o app falar pela rede interna do compose
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-algarage}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    image: algarage-web:local
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=${POSTGRES_DB:-algarage};Username=${POSTGRES_USER:-algarage};Password=${POSTGRES_PASSWORD}"
+    ports:
+      - "8080:8080"
+
+volumes:
+  algarage_pgdata:
+    driver: local

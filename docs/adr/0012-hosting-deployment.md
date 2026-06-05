@@ -1,26 +1,34 @@
-# ADR-0012 — Hospedagem em containers, região Brasil
+# ADR-0012 — Implantação local-first (Raspberry Pi / ARM64), portável para nuvem
 
-- **Status:** Aceito
+- **Status:** Aceito (revisado em 2026-06-05 após decisão do stakeholder)
 - **Data:** 2026-06-05
-- **Decisores:** CTO, Tech Lead
+- **Decisores:** CTO, Tech Lead, PO
 
 ## Contexto
-O público-alvo é brasileiro e o render mode `InteractiveServer` é sensível a latência (SignalR). A
-LGPD favorece residência de dados no Brasil. Não queremos travar numa única nuvem.
+Decisão do stakeholder: o ÄLGarage, **nesta fase, é uma ferramenta interna da equipe**, hospedada
+em **servidor local** (Raspberry Pi ou similar) rodando site + banco. Sem nuvem agora. No futuro,
+possivelmente Azure ou AWS — mantendo tudo **portável, sem lock-in proprietário**.
 
-## Opções consideradas
-1. **Containers (Docker) em região BR**, cloud-agnóstico — **Azure Container Apps (`Brazil South`)**
-   recomendado, **AWS (`sa-east-1`)** equivalente; **PostgreSQL gerenciado**.
-2. **PaaS amarrado** (ex.: App Service .NET sem container) — simples, mas menos portável.
-3. **VM/VPS própria** — barato, mas mais operação (patch, escala, backup) no nosso colo.
+Isso muda o perfil: poucos usuários, rede confiável (LAN), custo ~zero, mas operação é nossa
+(energia, cartão SD frágil, backup manual).
 
 ## Decisão
-**Opção 1.** App empacotado em **container**; deploy em região do Brasil; banco **PostgreSQL
-gerenciado** (Flexible Server / RDS). Nuvem concreta é Q4 em [`06`](../06-riscos-e-questoes-abertas.md)
-(default: Azure Container Apps, Brazil South). **Dev** opcionalmente com **.NET Aspire**.
+- **Empacotar em Docker, imagem `linux/arm64`** para o Pi (também roda em amd64). Ver [`Dockerfile`](../../Dockerfile).
+- **PostgreSQL** mantido (paridade com a nuvem futura), em container ARM64, via
+  [`docker-compose.yml`](../../docker-compose.yml).
+- **Rodar de SSD/USB, não do cartão SD** (durabilidade/IO). Dados do Postgres num volume apontado
+  para o SSD.
+- **Backup do Postgres** agendado (`pg_dump` comprimido + rotação) — ver [`scripts/`](../../scripts).
+- **Sem HTTPS forçado** no app: roda por HTTP na LAN; TLS, se desejado, via reverse proxy à frente.
+- **Cloud-portável**: como é container + Postgres, migrar para Azure (Container Apps) ou AWS (ECS/
+  App Runner) no futuro é re-deploy, **não reescrita**. Nada de serviço proprietário no caminho.
+
+Detalhe operacional em [`08-implantacao-local.md`](../08-implantacao-local.md).
 
 ## Consequências
-- ✅ Baixa latência p/ o público BR (importante no Server) e residência de dados (LGPD).
-- ✅ Cloud-agnóstico: trocar de nuvem é re-deploy do container, não reescrita.
-- ⚠️ Operação de container/observabilidade exige setup de CI/CD (Fase 1).
-- ➡️ Escala horizontal disponível quando marketing trouxer picos (ver R7).
+- ✅ Custo ~zero, controle total, dados ficam fisicamente com a equipe (bom p/ LGPD/privacidade).
+- ✅ Render mode `InteractiveServer` fica ainda mais adequado (latência de LAN é mínima).
+- ✅ Portabilidade futura preservada (sem lock-in).
+- ⚠️ Disponibilidade/durabilidade são responsabilidade nossa: **SSD obrigatório**, **backup
+  testado**, e energia/uptime do Pi são pontos únicos de falha (aceitável p/ ferramenta interna).
+- ⚠️ Build ARM64: compilar no próprio Pi ou via `docker buildx` cross-platform.

@@ -1,0 +1,16 @@
+# Build context ignore — mantém a imagem enxuta e o build rápido.
+**/bin/
+**/obj/
+**/out/
+artifacts/
+TestResults/
+.git/
+.github/
+.vs/
+.vscode/
+.idea/
+docs/
+*.md
+**/appsettings.*.local.json
+.env
+backups/

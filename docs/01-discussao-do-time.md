@@ -250,3 +250,21 @@ consentimento. Nada disso é feature de produto, é fundação.
 **Pontos que o time NÃO consegue decidir sozinho** (vão para você): orçamento de dados, mercados-alvo
 do MVP, nuvem preferida, e confirmação da política anti-scraping. Ver
 [`06-riscos-e-questoes-abertas.md`](06-riscos-e-questoes-abertas.md).
+
+---
+
+## 📌 Atualização pós-respostas do stakeholder (2026-06-05)
+
+Algumas premissas das rodadas acima mudaram com as respostas recebidas. Este documento é um **registro
+histórico do debate**; as decisões vigentes são:
+
+- **Hospedagem:** não é mais nuvem BR. É **local na equipe** — Raspberry Pi/ARM64, Docker, Postgres
+  com backup em SSD; **portável** para Azure/AWS depois, sem lock-in. (As conclusões sobre latência
+  do render mode Server **continuam válidas e até reforçadas** — agora é LAN.) → [ADR-0012](adr/0012-hosting-deployment.md).
+- **Idiomas:** **Inglês + Português** desde o MVP (i18n). → [ADR-0013](adr/0013-i18n-en-pt.md).
+- **Scraping:** **confirmado sem scraping**. → [ADR-0007](adr/0007-parts-finder-affiliate-links-no-scraping.md).
+- **UI:** **dark mode obrigatório**. → [ADR-0014](adr/0014-dark-mode.md).
+- **Produto:** o escopo atual é **ferramenta interna da equipe** (não consumidor público). Assinatura/
+  marketing permanecem como _futuro_, previstos na arquitetura.
+
+Ainda em aberto: **orçamento de dados (Q1)** — a maior bifurcação. Ver [`06`](06-riscos-e-questoes-abertas.md).

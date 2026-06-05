@@ -41,14 +41,28 @@ Resumo das tecnologias e o porquê de cada uma. Decisões individuais têm ADR p
 - **Trade-off:** Identity exige cuidar de reset de senha, e-mail, MFA nós mesmos. Aceitável no MVP;
   reavaliar se a base crescer.
 
-## Hospedagem — Containers em região Brasil
+## Hospedagem — Local-first (Raspberry Pi / ARM64), portável para nuvem
 
-- **Docker** + orquestração gerenciada: **Azure Container Apps (`Brazil South`)** como recomendação,
-  com **AWS `sa-east-1`** como alternativa equivalente. Banco: **PostgreSQL gerenciado** (Azure
-  Database for PostgreSQL Flexible Server / Amazon RDS).
-- Motivos: **latência** para o público BR (importante no render mode Server) e **residência de
-  dados** (LGPD). Container mantém tudo **cloud-agnóstico**. ([ADR-0012](adr/0012-hosting-deployment.md))
+- **Ferramenta interna da equipe**, hospedada **localmente** num **Raspberry Pi** (ou similar):
+  **Docker, imagem `linux/arm64`**, site + **PostgreSQL** no mesmo host via `docker-compose`.
+- **SSD/USB** para o banco (não cartão SD) + **backup** de Postgres agendado (`pg_dump`).
+- **Sem nuvem agora.** Como é container + Postgres padrão, migrar para **Azure** (Container Apps) ou
+  **AWS** (ECS/App Runner + RDS) no futuro é re-deploy, **sem lock-in**. ([ADR-0012](adr/0012-hosting-deployment.md))
 - **Dev:** opcionalmente **.NET Aspire** para orquestrar app + Postgres localmente.
+
+## Internacionalização — Inglês + Português (desde o MVP)
+
+- **`Microsoft.Extensions.Localization`** (no shared framework, sem pacote extra) com
+  **`IStringLocalizer`** + **`.resx`** (`SharedResource.resx` em inglês neutro,
+  `SharedResource.pt-BR.resx`). Padrão `pt-BR`. ([ADR-0013](adr/0013-i18n-en-pt.md))
+- **`InvariantGlobalization` desligado** (precisa de ICU; imagem de container Debian inclui).
+
+## UI / Tema — Dark mode obrigatório
+
+- **Dark é o padrão**, via **CSS design tokens** (custom properties), `data-theme` + `localStorage`,
+  com script anti-flash. Light é opcional. ([ADR-0014](adr/0014-dark-mode.md))
+- Sem framework de UI pesado no MVP; CSS próprio enxuto. Um design system (ex.: MudBlazor) pode
+  entrar depois **se** a complexidade das telas justificar — fica como decisão futura.
 
 ## Bibliotecas principais (e as que evitamos de propósito)
 
@@ -70,6 +84,7 @@ Resumo das tecnologias e o porquê de cada uma. Decisões individuais têm ADR p
 
 ## Resumo em uma frase
 
-**.NET 10 + Blazor Web App (Server) + PostgreSQL + EF Core, em containers numa região do Brasil,
-com bibliotecas comprovadamente livres** — uma stack conservadora de propósito, otimizada para um
-time pequeno entregar rápido sem armadilhas de licença ou reescrita.
+**.NET 10 + Blazor Web App (Server, dark-first, en/pt) + PostgreSQL + EF Core, em containers ARM64
+rodando localmente num Raspberry Pi (portável para nuvem), com bibliotecas comprovadamente livres**
+— uma stack conservadora de propósito, otimizada para um time pequeno entregar rápido sem armadilhas
+de licença, lock-in ou reescrita.

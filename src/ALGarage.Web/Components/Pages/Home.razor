@@ -1,11 +1,18 @@
 @page "/"
+@using ALGarage.Web.Components.Shared
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> L
 
-<PageTitle>ÄLGarage</PageTitle>
+<PageTitle>@L["AppName"]</PageTitle>
 
-<h1>ÄLGarage</h1>
+<div style="display:flex; align-items:center; justify-content:space-between; gap:1rem;">
+    <h1>@L["AppName"]</h1>
+    <ThemeToggle />
+</div>
 
-<p>
-    Esqueleto do projeto. Esta página existe só para validar o host Blazor — <strong>não</strong> há
-    features implementadas nesta fase (estruturação). Veja a documentação de decisão em
-    <code>/docs</code> na raiz do repositório.
+<p>@L["HomeTagline"]</p>
+
+<p style="color:var(--text-muted)">
+    Idiomas: <strong>en</strong> · <strong>pt-BR</strong> (i18n configurado — ADR-0013).
+    Tema padrão: <strong>dark</strong> (ADR-0014). Documentação de decisão em <code>/docs</code>.
 </p>

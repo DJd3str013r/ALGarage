@@ -26,7 +26,9 @@ preparada para **multi-marca**, **assinatura paga** e **3D**, mas nada disso é 
 | Multi-marca | **Padrão de _providers_/estratégia** por marca; `Brand` como entidade | Volvo hoje sem engessar a expansão. |
 | Peças | **Links via API de afiliados/deep-links** (ex.: Mercado Livre). **Sem scraping.** | Legal, estável e dentro dos Termos de Uso. |
 | VIN | **NHTSA vPIC (grátis)** como base + provider comercial opcional + **dataset Volvo curado (plano B)** | Resiliência: nenhuma fonte única é confiável p/ o mercado BR. |
-| Hospedagem | **Containers** (Docker) em região **Brasil** (Azure Container Apps `Brazil South` ou AWS `sa-east-1`) | Latência + residência de dados (LGPD). Cloud-agnóstico via container. |
+| Hospedagem | **Local-first**: Docker **ARM64** num **Raspberry Pi** (site + Postgres), SSD + backup; portável p/ Azure/AWS depois | Ferramenta interna da equipe; custo ~zero, sem lock-in. ([ADR-0012](adr/0012-hosting-deployment.md)) |
+| i18n | **Inglês + Português** desde o MVP (`IStringLocalizer`/`.resx`) | Decisão do stakeholder; barato fazer já, caro depois. ([ADR-0013](adr/0013-i18n-en-pt.md)) |
+| UI/Tema | **Dark mode obrigatório e padrão**, via design tokens | Requisito do stakeholder. ([ADR-0014](adr/0014-dark-mode.md)) |
 | 3D | **Stretch.** Three.js/Babylon via JS interop, começando por **SVG/diagrama 2D** | Modelos 3D por veículo são caros e arriscados; entregamos valor antes com 2D. |
 
 ## Os 3 maiores riscos (detalhe em [`06`](06-riscos-e-questoes-abertas.md))
@@ -40,15 +42,23 @@ preparada para **multi-marca**, **assinatura paga** e **3D**, mas nada disso é 
    riggados por veículo, com peças nomeadas, não escalam para a linha Volvo no MVP. Mitigação:
    tratar como stretch e prototipar com diagramas 2D antes.
 
-## O que precisamos de VOCÊ antes de avançar
+## Decisões do stakeholder já incorporadas (rodada Q1–Q5)
 
-As perguntas que travam decisões estão em [`06-riscos-e-questoes-abertas.md`](06-riscos-e-questoes-abertas.md).
-As mais urgentes:
+- **Hospedagem:** local na equipe (Raspberry Pi/ARM64), Docker, Postgres com backup em SSD;
+  portável p/ Azure/AWS no futuro. ✅
+- **Idiomas:** Inglês + Português, i18n configurado desde já. ✅
+- **Scraping:** confirmado **sem scraping** — só deep-links/afiliados. ✅
+- **Nuvem:** nada agora (local); futuro portável, sem lock-in. ✅
+- **UI:** dark mode obrigatório. ✅
 
-1. **Orçamento para dados/APIs pagas** (VIN/peças/specs) — define se o MVP nasce com dados ricos ou com dataset curado manual.
-2. **Mercados/idiomas alvo do MVP** — só Brasil/PT-BR? Isso muda fontes de dados e hospedagem.
-3. **Apetite por scraping** — confirmamos a política "somente afiliados/APIs oficiais"?
-4. **Nuvem preferida** (Azure vs AWS vs provedor BR) — afeta custo e tooling.
+## O que ainda precisamos de VOCÊ
+
+Continua em aberto (ver [`06`](06-riscos-e-questoes-abertas.md)):
+
+1. **Orçamento para dados/APIs pagas** (VIN/peças/specs) — define se o MVP nasce com dados ricos ou
+   com dataset curado manual. **(maior bifurcação, ainda sem resposta)**
+2. **Modelos Volvo iniciais** a curar (sugestão: XC60, XC40, S60, V40).
+3. **Alinhamento de expectativa do 3D** (2D primeiro; 3D por-VIN pode não ser viável).
 
 ## O que NÃO foi feito (de propósito)
 

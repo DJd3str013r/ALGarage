@@ -20,25 +20,27 @@
 Estas travam ou direcionam o trabalho. Sem elas, seguimos com os _defaults_ marcados, mas a escolha
 é sua.
 
-### ❓ Q1 — Orçamento para dados/APIs pagas
-A maior bifurcação do projeto. Define se o MVP nasce com **dados ricos (API paga)** ou **curado
-manual (poucos modelos)**.
+### ✅ RESOLVIDAS na rodada de respostas (2026-06-05)
+
+- **Hospedagem (Q4 original):** local na equipe — **Raspberry Pi / ARM64**, Docker, Postgres com
+  backup em SSD; portável para Azure/AWS no futuro, sem lock-in. → [ADR-0012](adr/0012-hosting-deployment.md).
+- **Idiomas (parte do Q2):** **Inglês + Português**, i18n desde o MVP. → [ADR-0013](adr/0013-i18n-en-pt.md).
+- **Scraping (Q3):** **confirmado SEM scraping** — só deep-links/afiliados. → [ADR-0007](adr/0007-parts-finder-affiliate-links-no-scraping.md).
+- **UI:** **dark mode obrigatório**. → [ADR-0014](adr/0014-dark-mode.md).
+
+> Nota: como a hospedagem virou **local/interna**, parte do peso de LGPD muda (dados ficam
+> fisicamente com a equipe), mas os princípios de minimização/exclusão continuam valendo.
+
+### ❓ Q1 — Orçamento para dados/APIs pagas  *(AINDA ABERTA — maior bifurcação)*
+Define se o MVP nasce com **dados ricos (API paga)** ou **curado manual (poucos modelos)**.
 - **Default se você não responder:** **curado manual** + vPIC grátis. Funciona, mas cobre poucos
   modelos no lançamento.
 
-### ❓ Q2 — Mercado e idioma do MVP
-- Só **Brasil / PT-BR**? Ou já mirar internacional?
-- Afeta fontes de dados (vPIC US vs BR), hospedagem e i18n.
-- **Default:** **só Brasil, PT-BR.**
-
-### ❓ Q3 — Política anti-scraping confirmada?
-Recomendamos **somente afiliados/APIs oficiais** no buscador de peças. Você confirma?
-- **Default:** **sim, sem scraping.**
-
-### ❓ Q4 — Nuvem preferida
-Azure (Container Apps, Brazil South), AWS (sa-east-1) ou provedor BR?
-- Afeta custo, tooling e contratos.
-- **Default:** **Azure Container Apps, Brazil South** (cloud-agnóstico via container, fácil trocar).
+### ❓ Q2 — Mercado-alvo dos *dados* (distinto do idioma, que já foi resolvido)
+Idioma já é en + pt. Mas a **fonte de dados** muda conforme o mercado dos veículos: vPIC cobre bem
+o mercado **US**; trims/versões **BR** divergem e dependem mais de curadoria.
+- Os carros da equipe são **brasileiros**? Isso confirma o peso da curadoria BR.
+- **Default:** assumir veículos BR → curadoria BR + vPIC como apoio.
 
 ### ❓ Q5 — Escopo do "núcleo leve" no MVP
 "Versões de fábrica" e "upgrades/stages" entram no **MVP** (telas de leitura) ou ficam para a Fase 2?

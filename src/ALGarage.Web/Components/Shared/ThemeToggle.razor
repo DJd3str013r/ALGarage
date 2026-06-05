@@ -1,0 +1,24 @@
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+
+<button class="btn" @onclick="ToggleAsync" type="button">
+    @(_theme == "dark" ? "☀️ Light" : "🌙 Dark")
+</button>
+
+@code {
+    private string _theme = "dark";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _theme = await JS.InvokeAsync<string>("algTheme.get");
+            StateHasChanged();
+        }
+    }
+
+    private async Task ToggleAsync()
+    {
+        _theme = await JS.InvokeAsync<string>("algTheme.toggle");
+    }
+}

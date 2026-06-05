@@ -16,7 +16,9 @@ inspirado em Michael Nygard. Status possíveis: `Proposto` · `Aceito` · `Subst
 | [0009](0009-maintenance-estimation-engine.md) | Motor de estimativa de manutenção (km e/ou tempo) | Aceito |
 | [0010](0010-3d-visualization-stretch.md) | Visualização 3D como stretch (2D primeiro) | Aceito |
 | [0011](0011-lgpd-data-protection.md) | LGPD como fundação | Aceito |
-| [0012](0012-hosting-deployment.md) | Hospedagem em containers, região Brasil | Aceito |
+| [0012](0012-hosting-deployment.md) | Implantação local-first (Raspberry Pi/ARM64), portável p/ nuvem | Aceito (revisado) |
+| [0013](0013-i18n-en-pt.md) | Internacionalização (Inglês + Português) desde o MVP | Aceito |
+| [0014](0014-dark-mode.md) | Dark mode obrigatório (e padrão) via design tokens | Aceito |
 
 ## Template
 

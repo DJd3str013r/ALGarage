@@ -27,6 +27,11 @@ appsettings.*.local.json
 .env
 secrets.json
 
+## Backups de banco (mantém a pasta, ignora os dumps)
+backups/*.sql
+backups/*.sql.gz
+backups/*.dump
+
 ## SO
 .DS_Store
 Thumbs.db

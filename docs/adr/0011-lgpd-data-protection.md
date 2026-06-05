@@ -10,7 +10,8 @@ sob a LGPD. Tratar isso como _backlog_ é risco jurídico e de reputação.
 
 ## Decisão
 LGPD é **requisito de fundação**, não feature futura. O esqueleto já prevê:
-- **Residência de dados no Brasil** (hospedagem em região BR — [ADR-0012](0012-hosting-deployment.md)).
+- **Residência de dados local** (servidor da equipe no Brasil — [ADR-0012](0012-hosting-deployment.md));
+  se migrar para nuvem, escolher **região no Brasil**.
 - **Base legal + consentimento** registrados (`ConsentLog`), com versão do termo.
 - **Minimização**: só coletamos o necessário para a estimativa/serviço.
 - **Direitos do titular**: exportação (`DataExportRequest`) e exclusão (`DeletionRequest`) — soft

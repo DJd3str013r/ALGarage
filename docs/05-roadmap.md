@@ -31,7 +31,8 @@ O coração do produto: cadastrar o carro e ser avisado da manutenção.
 7. **Dados Volvo curados** para ~4 modelos BR populares (XC60, XC40, S60, V40) — seed.
 
 **Critério de pronto:** um dono de XC60 cadastra pelo VIN, vê "óleo vence em ~38 dias", registra a
-troca e o contador zera. Tudo hospedado em região BR, com LGPD básico (consentimento, exclusão).
+troca e o contador zera. Tudo rodando **localmente no Pi** (Docker + Postgres com backup), com LGPD
+básico (consentimento, exclusão).
 
 **Núcleo leve (telas de leitura, se couber sem atrasar):**
 - **Versões de fábrica**: exibir `ModelVariant` + `FactoryOption` do veículo.

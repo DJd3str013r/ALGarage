@@ -1,0 +1,1 @@
+# Diretório de backups do Postgres. Os dumps (*.sql.gz) são ignorados pelo git.

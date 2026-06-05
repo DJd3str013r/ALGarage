@@ -1,0 +1,69 @@
+/* ÄLGarage — tema. Dark mode é OBRIGATÓRIO e é o PADRÃO (ADR-0014).
+   Light é opcional via [data-theme="light"]. Tokens em CSS custom properties para
+   trocar de tema sem reescrever componentes. */
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0e1116;
+  --surface: #161b22;
+  --surface-2: #1f2630;
+  --text: #e6edf3;
+  --text-muted: #9aa7b4;
+  --border: #2a313c;
+  --accent: #4aa3ff;
+  /* Estados de manutenção (o "vermelho" do DueSoon/Overdue) */
+  --state-ok: #3fb950;
+  --state-due-soon: #d29922;
+  --state-overdue: #f85149;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f8fa;
+  --surface: #ffffff;
+  --surface-2: #eef1f4;
+  --text: #1f2328;
+  --text-muted: #59636e;
+  --border: #d0d7de;
+  --accent: #0969da;
+  --state-ok: #1a7f37;
+  --state-due-soon: #9a6700;
+  --state-overdue: #cf222e;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.55;
+}
+
+.container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+a { color: var(--accent); }
+code {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+.btn {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.btn:hover { border-color: var(--accent); }

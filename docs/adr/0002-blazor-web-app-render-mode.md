@@ -25,6 +25,6 @@ mode (ver [ADR-0010](0010-3d-visualization-stretch.md)).
 
 ## Consequências
 - ✅ Menor complexidade e maior velocidade no MVP.
-- ✅ Latência aceitável com hospedagem em região BR ([ADR-0012](0012-hosting-deployment.md)).
+- ✅ Latência mínima: o app roda na **LAN** da equipe (Raspberry Pi local — [ADR-0012](0012-hosting-deployment.md)).
 - ⚠️ Estado por conexão consome memória; escala de muitas conexões simultâneas exige atenção.
 - ➡️ Migração para `Auto` é evolução planejada, não retrabalho — o `Shared` já isola contratos.
