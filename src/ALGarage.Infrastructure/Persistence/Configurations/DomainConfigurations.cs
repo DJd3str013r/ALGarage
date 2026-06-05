@@ -15,7 +15,8 @@ internal sealed class VehicleConfiguration : IEntityTypeConfiguration<Vehicle>
         b.HasKey(v => v.Id);
 
         b.Property(v => v.Vin)
-            .HasConversion(vin => vin.Value, value => Vin.Parse(value))
+            // Qualificado: 'Vin' bare colidiria com o namespace ALGarage.Infrastructure.Vin.
+            .HasConversion(vin => vin.Value, value => ALGarage.Domain.Vehicles.Vin.Parse(value))
             .HasMaxLength(17)
             .IsRequired();
 

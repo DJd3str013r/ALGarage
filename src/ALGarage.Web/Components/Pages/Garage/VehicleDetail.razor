@@ -183,12 +183,15 @@ else
         serviceError = null;
         try
         {
-            var items = string.IsNullOrWhiteSpace(ServiceInput.Description) && string.IsNullOrWhiteSpace(ServiceInput.MaintenanceItemKey)
-                ? new List<AddServiceItemDto>()
-                : [new AddServiceItemDto(
-                    string.IsNullOrWhiteSpace(ServiceInput.Description) ? ServiceInput.MaintenanceItemKey! : ServiceInput.Description,
-                    string.IsNullOrWhiteSpace(ServiceInput.MaintenanceItemKey) ? null : ServiceInput.MaintenanceItemKey,
-                    null)];
+            var items = new List<AddServiceItemDto>();
+            if (!(string.IsNullOrWhiteSpace(ServiceInput.Description) && string.IsNullOrWhiteSpace(ServiceInput.MaintenanceItemKey)))
+            {
+                var desc = string.IsNullOrWhiteSpace(ServiceInput.Description)
+                    ? ServiceInput.MaintenanceItemKey!
+                    : ServiceInput.Description;
+                var key = string.IsNullOrWhiteSpace(ServiceInput.MaintenanceItemKey) ? null : ServiceInput.MaintenanceItemKey;
+                items.Add(new AddServiceItemDto(desc, key, null));
+            }
 
             var req = new AddServiceRecordRequest(
                 Id, ServiceInput.PerformedOn, ServiceInput.OdometerKm,

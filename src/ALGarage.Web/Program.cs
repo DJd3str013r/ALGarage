@@ -32,6 +32,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 // --- Autenticação (ASP.NET Core Identity, cookie). ---
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<AuthenticationStateProvider, HttpContextAuthenticationStateProvider>();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
