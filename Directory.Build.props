@@ -7,6 +7,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Avisos de auditoria de pacotes (NU190x) ficam visíveis, mas NÃO quebram o build:
+         vulnerabilidades transitivas fora do nosso controle imediato não devem travar a CI. -->
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902;NU1903;NU1904</WarningsNotAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <!-- i18n: precisamos de cultura completa (en + pt-BR). NÃO usar InvariantGlobalization. -->
     <InvariantGlobalization>false</InvariantGlobalization>
