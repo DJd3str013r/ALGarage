@@ -21,5 +21,6 @@ curado. Resultados mesclados com **proveniência** por campo (qual fonte trouxe 
 ## Consequências
 - ✅ Resiliência: o produto funciona mesmo sem nenhuma API paga (curado + vPIC).
 - ✅ Custo controlado por feature-flag e cache.
-- ⚠️ Dataset curado é trabalho manual → começar com ~4 modelos; risco de gargalo (ver R9).
+- ⚠️ Dataset curado é trabalho manual → começar com **1 modelo (Volvo V40 2012–2019)**; risco de
+  gargalo ao ampliar (ver R9 e [`09-dataset-v40.md`](../09-dataset-v40.md)).
 - ➡️ Proveniência permite auditar e preferir a fonte mais confiável em conflitos.

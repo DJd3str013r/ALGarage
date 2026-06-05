@@ -28,9 +28,10 @@ O coração do produto: cadastrar o carro e ser avisado da manutenção.
    primeiro", projeção por km/dia. Estados `Ok`/`DueSoon`/`Overdue`.
 5. **Histórico de serviços**: registrar serviço feito → **reseta** o relógio do item.
 6. **Buscador de peças (links)**: deep-links de busca a partir de VIN/peça; **só links**.
-7. **Dados Volvo curados** para ~4 modelos BR populares (XC60, XC40, S60, V40) — seed.
+7. **Dados Volvo curados** para o **Volvo V40 (2012–2019)** — todas as versões/motores/extras
+   ([`09-dataset-v40.md`](09-dataset-v40.md)). Demais modelos ficam para depois.
 
-**Critério de pronto:** um dono de XC60 cadastra pelo VIN, vê "óleo vence em ~38 dias", registra a
+**Critério de pronto:** um dono de V40 cadastra pelo VIN, vê "óleo vence em ~38 dias", registra a
 troca e o contador zera. Tudo rodando **localmente no Pi** (Docker + Postgres com backup), com LGPD
 básico (consentimento, exclusão).
 

@@ -266,5 +266,7 @@ histórico do debate**; as decisões vigentes são:
 - **UI:** **dark mode obrigatório**. → [ADR-0014](adr/0014-dark-mode.md).
 - **Produto:** o escopo atual é **ferramenta interna da equipe** (não consumidor público). Assinatura/
   marketing permanecem como _futuro_, previstos na arquitetura.
+- **Modelo inicial (Q6):** o "começar com 4 modelos" das rodadas acima foi **estreitado para um só**:
+  **Volvo V40 (2012–2019)**, com todas as versões/motores/extras. → [`09-dataset-v40.md`](09-dataset-v40.md).
 
 Ainda em aberto: **orçamento de dados (Q1)** — a maior bifurcação. Ver [`06`](06-riscos-e-questoes-abertas.md).

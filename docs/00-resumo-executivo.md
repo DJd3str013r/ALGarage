@@ -57,7 +57,8 @@ Continua em aberto (ver [`06`](06-riscos-e-questoes-abertas.md)):
 
 1. **Orçamento para dados/APIs pagas** (VIN/peças/specs) — define se o MVP nasce com dados ricos ou
    com dataset curado manual. **(maior bifurcação, ainda sem resposta)**
-2. **Modelos Volvo iniciais** a curar (sugestão: XC60, XC40, S60, V40).
+2. ~~Modelos Volvo iniciais a curar~~ → **resolvido: somente Volvo V40 (2012–2019)**
+   ([`09-dataset-v40.md`](09-dataset-v40.md)).
 3. **Alinhamento de expectativa do 3D** (2D primeiro; 3D por-VIN pode não ser viável).
 
 ## O que NÃO foi feito (de propósito)

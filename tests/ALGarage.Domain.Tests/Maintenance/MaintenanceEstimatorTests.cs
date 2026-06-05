@@ -20,7 +20,7 @@ public sealed class MaintenanceEstimatorTests
         // 10.000 km de intervalo, rodou 2.000 desde a última troca, 20 km/dia → ~400 dias → Ok.
         var input = new MaintenanceInput(
             IntervalKm: 10_000,
-            IntervalDays: null,
+            IntervalMonths: null,
             WhicheverComesFirst: true,
             LastServiceDate: new DateOnly(2026, 1, 1),
             LastServiceKm: 50_000,
@@ -37,37 +37,39 @@ public sealed class MaintenanceEstimatorTests
     [Fact]
     public void Whichever_comes_first_picks_the_earlier_of_time_or_km()
     {
-        // Por km daria ~400 dias; por tempo vence em 30 dias → vence o tempo, e está DueSoon? não (30 > 14) → Ok.
+        // Por km daria ~400 dias; por tempo vence em ~1 mês → vence o tempo. 1 mês > 14 dias → Ok.
         var input = new MaintenanceInput(
             IntervalKm: 10_000,
-            IntervalDays: 365,
+            IntervalMonths: 12,
             WhicheverComesFirst: true,
-            LastServiceDate: Today.AddDays(-335), // vence por tempo em 30 dias
+            LastServiceDate: Today.AddMonths(-11), // vence por tempo em ~1 mês
             LastServiceKm: 50_000,
             CurrentKm: 52_000,
             AvgDailyKm: 20);
 
         var result = _estimator.Evaluate(input, Today);
 
-        result.DueByDate.ShouldBe(Today.AddDays(30));
-        result.EstimatedDueDate.ShouldBe(Today.AddDays(30)); // tempo veio primeiro
+        result.DueByDate.ShouldBe(Today.AddMonths(1));
+        result.EstimatedDueDate.ShouldBe(Today.AddMonths(1)); // tempo veio primeiro
         result.State.ShouldBe(MaintenanceState.Ok);
     }
 
     [Fact]
     public void Within_threshold_is_DueSoon()
     {
+        // Intervalo de 12 meses; última revisão deixa o vencimento a 7 dias de hoje (< 14) → DueSoon.
         var input = new MaintenanceInput(
             IntervalKm: null,
-            IntervalDays: 365,
+            IntervalMonths: 12,
             WhicheverComesFirst: true,
-            LastServiceDate: Today.AddDays(-358), // vence em 7 dias (< 14)
+            LastServiceDate: Today.AddMonths(-12).AddDays(7), // due = hoje + 7 dias
             LastServiceKm: 50_000,
             CurrentKm: 50_000,
             AvgDailyKm: 0);
 
         var result = _estimator.Evaluate(input, Today);
 
+        result.DueByDate.ShouldBe(Today.AddDays(7));
         result.State.ShouldBe(MaintenanceState.DueSoon);
     }
 
@@ -76,9 +78,9 @@ public sealed class MaintenanceEstimatorTests
     {
         var input = new MaintenanceInput(
             IntervalKm: 10_000,
-            IntervalDays: null,
+            IntervalMonths: null,
             WhicheverComesFirst: true,
-            LastServiceDate: Today.AddDays(-100),
+            LastServiceDate: Today.AddMonths(-3),
             LastServiceKm: 50_000,
             CurrentKm: 61_000, // já passou de 60.000
             AvgDailyKm: 30);

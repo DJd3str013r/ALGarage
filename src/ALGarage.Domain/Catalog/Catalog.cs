@@ -16,36 +16,49 @@ public sealed class Brand : Entity
 public sealed class VehicleModel : Entity
 {
     public Guid BrandId { get; set; }
-    public required string Name { get; set; }       // ex.: "XC60"
-    public string? Generation { get; set; }          // ex.: "II"
+    public required string Name { get; set; }       // ex.: "V40"
+    public string? Generation { get; set; }          // ex.: "II (P1)"
+    public string? BodyStyle { get; set; }           // ex.: "Hatchback"
 }
 
-/// <summary>A "versão" do veículo, resolvida pela decodificação do VIN.</summary>
+/// <summary>
+/// Motor — entidade de catálogo COMPARTILHADA por várias versões (um motor equipa vários trims/anos).
+/// <see cref="Family"/> liga a um <see cref="ALGarage.Domain.Maintenance.MaintenancePlan"/>.
+/// </summary>
+public sealed class EngineSpec : Entity
+{
+    public Guid BrandId { get; set; }
+    public required string Code { get; set; }        // ex.: "B4204T"
+    public required string Family { get; set; }      // ex.: "petrol-driveE-2.0" (chave p/ plano de manutenção)
+    public FuelType FuelType { get; set; }
+    public int DisplacementCc { get; set; }
+    public int PowerHp { get; set; }
+    public int Cylinders { get; set; }
+    public Aspiration Aspiration { get; set; }
+}
+
+/// <summary>A "versão" do veículo, resolvida pela decodificação do VIN. Referencia um motor.</summary>
 public sealed class ModelVariant : Entity
 {
     public Guid VehicleModelId { get; set; }
-    public required string Trim { get; set; }        // ex.: "T5 Momentum"
-    public int ModelYear { get; set; }
+    public Guid? EngineSpecId { get; set; }
+    public required string Trim { get; set; }        // ex.: "R-Design"
+    public int ModelYearFrom { get; set; }
+    public int ModelYearTo { get; set; }
     public string? Market { get; set; }              // ex.: "BR"
+    public string? Transmission { get; set; }        // "AT" / "MT"
+    public string? Drivetrain { get; set; }          // "FWD" / "AWD"
 
     /// <summary>Specs/opcionais heterogêneos (JSONB no Postgres).</summary>
     public string? SpecsJson { get; set; }
 }
 
-public sealed class EngineSpec : Entity
-{
-    public Guid ModelVariantId { get; set; }
-    public required string Code { get; set; }        // ex.: "B4204T"
-    public FuelType FuelType { get; set; }
-    public int DisplacementCc { get; set; }
-    public int PowerHp { get; set; }
-    public Aspiration Aspiration { get; set; }
-}
-
 public sealed class FactoryOption : Entity
 {
-    public Guid ModelVariantId { get; set; }
+    public Guid VehicleModelId { get; set; }
     public required string Code { get; set; }
     public required string Category { get; set; }
     public required string Name { get; set; }
+    public string? Description { get; set; }
+    public bool IsStandard { get; set; }
 }

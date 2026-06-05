@@ -12,7 +12,7 @@
 | R6 | **Custo de APIs pagas** corrói viabilidade | 🟡 Médio | 🟡 Média | Feature-flag por provider; cache agressivo; dataset curado reduz dependência |
 | R7 | **Render mode Server** sob pico de tráfego (marketing) | 🟢 Baixo | 🟡 Média | Hospedagem BR (latência); caminho para `InteractiveAuto`; escalar horizontal |
 | R8 | **Uso de marca "Volvo"** (trademark) sem afiliação oficial | 🟡 Médio | 🟡 Média | Disclaimers de "não afiliado"; revisão jurídica antes de marketing |
-| R9 | **Manutenção do dataset curado** vira gargalo manual | 🟡 Médio | 🟡 Média | Começar pequeno (4 modelos); ferramenta de import; comunidade no futuro |
+| R9 | **Manutenção do dataset curado** vira gargalo manual | 🟡 Médio | 🟡 Média | Começar com **1 modelo (V40)**; ferramenta de import; comunidade no futuro |
 | R10 | **Libs que viraram pagas** (AutoMapper/MediatR/FluentAssertions) | 🟢 Baixo | 🟢 Baixa | Já evitadas na escolha de stack ([02](02-decisoes-de-stack.md)) |
 
 ## Parte B — Questões que precisam de DECISÃO SUA
@@ -27,6 +27,9 @@ Estas travam ou direcionam o trabalho. Sem elas, seguimos com os _defaults_ marc
 - **Idiomas (parte do Q2):** **Inglês + Português**, i18n desde o MVP. → [ADR-0013](adr/0013-i18n-en-pt.md).
 - **Scraping (Q3):** **confirmado SEM scraping** — só deep-links/afiliados. → [ADR-0007](adr/0007-parts-finder-affiliate-links-no-scraping.md).
 - **UI:** **dark mode obrigatório**. → [ADR-0014](adr/0014-dark-mode.md).
+- **Modelos iniciais a curar (Q6):** **apenas Volvo V40, geração II (P1), anos 2012–2019** — todas as
+  versões/motores/extras. → dataset em [`09-dataset-v40.md`](09-dataset-v40.md) e
+  [`seed`](../src/ALGarage.Infrastructure/Seed/Data/volvo-v40-2012-2019.json).
 
 > Nota: como a hospedagem virou **local/interna**, parte do peso de LGPD muda (dados ficam
 > fisicamente com a equipe), mas os princípios de minimização/exclusão continuam valendo.
@@ -46,9 +49,10 @@ o mercado **US**; trims/versões **BR** divergem e dependem mais de curadoria.
 "Versões de fábrica" e "upgrades/stages" entram no **MVP** (telas de leitura) ou ficam para a Fase 2?
 - **Default:** **entram como leitura**, se não atrasarem o coração (garagem+estimativa).
 
-### ❓ Q6 — Modelos Volvo iniciais para curar
-Sugerimos **XC60, XC40, S60, V40** (populares no BR). Concorda? Trocaria algum?
-- **Default:** esses quatro.
+### ✅ Q6 — Modelos Volvo iniciais para curar  *(RESOLVIDO)*
+Escopo inicial definido pelo stakeholder: **somente Volvo V40 (geração II / P1), 2012–2019**, com
+todas as versões/motores/extras. Foco em profundidade num único modelo antes de ampliar.
+Ver [`09-dataset-v40.md`](09-dataset-v40.md).
 
 ### ❓ Q7 — Profundidade do 3D que você realmente quer
 Você topa que o "3D explodindo para esqueleto **por veículo**" pode **não** ser viável e que

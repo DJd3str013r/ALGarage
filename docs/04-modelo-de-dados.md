@@ -12,7 +12,7 @@ serão definidos nas migrations. As entidades estão refletidas como classes-esq
                          └──────┬───────┘
                                 │ 1..*
                          ┌──────▼───────┐
-                         │ VehicleModel │  (ex.: XC60)
+                         │ VehicleModel │  (ex.: V40)
                          └──────┬───────┘
                                 │ 1..*
                          ┌──────▼────────┐        ┌──────────────┐
@@ -53,10 +53,15 @@ serão definidos nas migrations. As entidades estão refletidas como classes-esq
 | Entidade | Campos-chave | Notas |
 |---|---|---|
 | **Brand** | `Id`, `Name`, `Slug` | Volvo é o primeiro registro. Cidadã de 1ª classe p/ multi-marca. |
-| **VehicleModel** | `Id`, `BrandId`, `Name`, `Generation` | Ex.: XC60, gerações I/II. |
-| **ModelVariant** | `Id`, `VehicleModelId`, `Trim`, `ModelYear`, `Market`, `SpecsJson (JSONB)` | A "versão" resolvida do VIN. `SpecsJson` guarda specs heterogêneas. |
-| **EngineSpec** | `Id`, `ModelVariantId`, `Code`, `FuelType`, `DisplacementCc`, `PowerHp`, `Aspiration` | Motorização. |
-| **FactoryOption** | `Id`, `ModelVariantId`, `Code`, `Category`, `Name` | Opcionais de fábrica. Pode também viver em `SpecsJson`. |
+| **VehicleModel** | `Id`, `BrandId`, `Name`, `Generation`, `BodyStyle` | Ex.: V40, geração II (P1). |
+| **ModelVariant** | `Id`, `VehicleModelId`, `EngineSpecId?`, `Trim`, `ModelYearFrom`, `ModelYearTo`, `Market`, `Transmission`, `Drivetrain`, `SpecsJson (JSONB)` | A "versão" resolvida do VIN. **Referencia** um motor. `SpecsJson` guarda specs heterogêneas. |
+| **EngineSpec** | `Id`, `BrandId`, `Code`, `Family`, `FuelType`, `DisplacementCc`, `PowerHp`, `Cylinders`, `Aspiration` | Motor **compartilhado** por várias versões (um motor equipa vários trims/anos). `Family` liga ao plano de manutenção. |
+| **FactoryOption** | `Id`, `VehicleModelId`, `Code`, `Category`, `Name`, `Description`, `IsStandard` | Opcionais/extras de fábrica. Pode também viver em `SpecsJson`. |
+
+> **Refinamento (jun/2026):** ao curar o dataset do V40, ficou claro que um **motor é compartilhado**
+> por várias versões e que os **planos de manutenção se aplicam à _família_ de motor**, não a uma
+> versão. O modelo foi ajustado: `EngineSpec` é entidade de catálogo independente referenciada por
+> `ModelVariant`, e `MaintenancePlan` referencia `EngineFamily`. Ver [`09-dataset-v40.md`](09-dataset-v40.md).
 
 ### Garagem do usuário
 
@@ -73,8 +78,8 @@ serão definidos nas migrations. As entidades estão refletidas como classes-esq
 
 | Entidade | Campos-chave | Notas |
 |---|---|---|
-| **MaintenancePlan** | `Id`, `ModelVariantId` (ou `EngineSpecId`), `Name`, `SourceRef` | Cronograma por modelo/motor. |
-| **MaintenanceItem** | `Id`, `MaintenancePlanId`, `Name`, `IntervalKm?`, `IntervalTime?` (ISO 8601 duration), `PartReferenceId?`, `WhicheverComesFirst (bool)` | Define **km e/ou tempo**. Óleo: tipicamente `IntervalKm` + `IntervalTime` com "o que vier primeiro". |
+| **MaintenancePlan** | `Id`, `BrandId?`, `EngineFamily`, `Name`, `SourceRef` | Cronograma por **família de motor** (ex.: `petrol-driveE-2.0`). |
+| **MaintenanceItem** | `Id`, `MaintenancePlanId`, `Name`, `Category?`, `IntervalKm?`, `IntervalMonths?`, `WhicheverComesFirst (bool)`, `PartHint?`, `Notes?` | Define **km e/ou tempo (meses)**. Óleo: tipicamente `IntervalKm` + `IntervalMonths` com "o que vier primeiro". `PartHint` alimenta o buscador de peças. |
 | **MaintenanceStatus** *(calculado, não persistido obrigatoriamente)* | `VehicleId`, `MaintenanceItemId`, `DueByDateUtc`, `DueAtKm`, `EstimatedDueDateUtc`, `State` (`Ok`/`DueSoon`/`Overdue`) | Saída do **motor de estimativa** (ver [`adr/0009`](adr/0009-maintenance-estimation-engine.md)). `DueSoon` é o que pinta de vermelho no 3D. |
 
 ### Histórico de serviços

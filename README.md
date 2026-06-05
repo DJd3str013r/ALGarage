@@ -24,6 +24,7 @@ A documentação de decisão é o entregável principal desta fase. Comece por a
 | [`docs/06-riscos-e-questoes-abertas.md`](docs/06-riscos-e-questoes-abertas.md) | Riscos e **perguntas que precisam de decisão sua**. |
 | [`docs/07-fontes-de-dados.md`](docs/07-fontes-de-dados.md) | Fontes de VIN, peças e especificações — com plano B. |
 | [`docs/08-implantacao-local.md`](docs/08-implantacao-local.md) | Rodar no Raspberry Pi (ARM64): Docker, Postgres, backup. |
+| [`docs/09-dataset-v40.md`](docs/09-dataset-v40.md) | Dataset curado do Volvo V40 (2012–2019): escopo, mapeamento e disclaimer. |
 | [`docs/adr/`](docs/adr/) | Architecture Decision Records (1 decisão por arquivo). |
 
 ## 🧱 Esqueleto da solution

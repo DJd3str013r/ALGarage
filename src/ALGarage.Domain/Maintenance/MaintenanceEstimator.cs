@@ -5,7 +5,7 @@ namespace ALGarage.Domain.Maintenance;
 /// <summary>Dados de entrada para avaliar UM item de manutenção de UM veículo.</summary>
 public readonly record struct MaintenanceInput(
     int? IntervalKm,
-    int? IntervalDays,
+    int? IntervalMonths,
     bool WhicheverComesFirst,
     DateOnly LastServiceDate,
     int LastServiceKm,
@@ -40,9 +40,9 @@ public sealed class MaintenanceEstimator : IMaintenanceEstimator
             dateFromKm = today.AddDays(daysFromKm);
         }
 
-        // 2) Vencimento por TEMPO.
-        DateOnly? dueByDate = input.IntervalDays is { } days
-            ? input.LastServiceDate.AddDays(days)
+        // 2) Vencimento por TEMPO (meses do calendário).
+        DateOnly? dueByDate = input.IntervalMonths is { } months
+            ? input.LastServiceDate.AddMonths(months)
             : null;
 
         // 3) Data prevista efetiva: o que vier primeiro (quando ambos existem e a regra pede).
