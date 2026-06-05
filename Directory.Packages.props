@@ -1,0 +1,38 @@
+<Project>
+
+  <!--
+    Central Package Management (CPM). Todas as versões de pacotes vivem aqui.
+    Mantemos a lista enxuta de propósito: na fase de estruturação só entram
+    dependências realmente necessárias para o esqueleto.
+
+    NOTA sobre licenciamento (2025): evitamos AutoMapper, MediatR e FluentAssertions
+    porque migraram para licença comercial paga. Ver docs/02-decisoes-de-stack.md.
+  -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Persistência -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+
+    <!-- Identity / Auth -->
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.0" />
+
+    <!-- Validação e mapeamento (alternativas livres às libs que viraram pagas) -->
+    <PackageVersion Include="FluentValidation" Version="11.11.0" />
+    <PackageVersion Include="Riok.Mapperly" Version="4.2.0" />
+
+    <!-- Observabilidade -->
+    <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+
+    <!-- Testes -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="Shouldly" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

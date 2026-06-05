@@ -1,0 +1,25 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+
+[*.{cs,csx}]
+indent_size = 4
+# Convenções de estilo
+dotnet_sort_system_directives_first = true
+csharp_using_directive_placement = outside_namespace:warning
+csharp_style_namespace_declarations = file_scoped:warning
+dotnet_style_namespace_match_folder = true:warning
+# Nulabilidade e imutabilidade
+dotnet_style_readonly_field = true:warning
+csharp_prefer_braces = true:warning
+
+[*.{csproj,props,targets,json,razor}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false

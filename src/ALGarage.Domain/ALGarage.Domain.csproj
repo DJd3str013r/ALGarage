@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Domain: regras de negócio puras. SEM dependências de framework (sem EF, sem ASP.NET).
+    Se um pacote de infraestrutura aparecer aqui, é bug de arquitetura.
+  -->
+  <PropertyGroup>
+    <RootNamespace>ALGarage.Domain</RootNamespace>
+  </PropertyGroup>
+
+</Project>

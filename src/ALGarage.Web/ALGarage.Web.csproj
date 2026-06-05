@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- Web: Blazor Web App (host + UI). Render mode InteractiveServer no MVP (ver ADR-0002). -->
+  <PropertyGroup>
+    <RootNamespace>ALGarage.Web</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ALGarage.Application\ALGarage.Application.csproj" />
+    <ProjectReference Include="..\ALGarage.Infrastructure\ALGarage.Infrastructure.csproj" />
+    <ProjectReference Include="..\ALGarage.Shared\ALGarage.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" />
+  </ItemGroup>
+
+</Project>

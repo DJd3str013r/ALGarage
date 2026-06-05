@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Shared: contratos (DTOs) compartilhados servidor↔cliente. Ponte para o futuro projeto .Client. -->
+  <PropertyGroup>
+    <RootNamespace>ALGarage.Shared</RootNamespace>
+  </PropertyGroup>
+
+</Project>

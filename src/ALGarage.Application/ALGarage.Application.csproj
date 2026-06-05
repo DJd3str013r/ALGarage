@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Application: casos de uso e PORTAS (interfaces) para o mundo externo. Depende só de Domain. -->
+  <PropertyGroup>
+    <RootNamespace>ALGarage.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ALGarage.Domain\ALGarage.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+  </ItemGroup>
+
+</Project>

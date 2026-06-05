@@ -1,0 +1,32 @@
+## .NET / Visual Studio
+bin/
+obj/
+out/
+*.user
+*.suo
+.vs/
+.vscode/
+*.DotSettings.user
+
+## Rider
+.idea/
+
+## Build / publish
+[Dd]ebug/
+[Rr]elease/
+publish/
+artifacts/
+TestResults/
+*.trx
+coverage*.json
+coverage*.xml
+
+## Secrets / config local
+appsettings.*.local.json
+*.env
+.env
+secrets.json
+
+## SO
+.DS_Store
+Thumbs.db
