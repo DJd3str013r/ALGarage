@@ -9,7 +9,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <!-- Avisos de auditoria de pacotes (NU190x) ficam visíveis, mas NÃO quebram o build:
          vulnerabilidades transitivas fora do nosso controle imediato não devem travar a CI. -->
-    <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902;NU1903;NU1904</WarningsNotAsErrors>
+    <!-- NU190x: auditoria de pacotes (vulns transitivas) não quebra o build.
+         BL0008: padrão do template Identity ([SupplyParameterFromForm] + inicializador);
+         seguro aqui porque os formulários enviam todos os campos. -->
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902;NU1903;NU1904;BL0008</WarningsNotAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <!-- i18n: precisamos de cultura completa (en + pt-BR). NÃO usar InvariantGlobalization. -->
     <InvariantGlobalization>false</InvariantGlobalization>
