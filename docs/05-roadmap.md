@@ -28,7 +28,12 @@ O coração do produto: cadastrar o carro e ser avisado da manutenção.
 >   cadastro → estimativa → serviço (reseta), rodando contra Postgres real via Testcontainers
 >   (requer Docker).
 >
-> Próximos: refinos de UX (alertas na lista da garagem), notificações, e ampliação de cobertura.
+> - **Incremento 3:** badges de alerta por carro na lista da garagem (vencido/próximo/em dia);
+>   **lembretes de manutenção por e-mail** (worker periódico + SMTP, desabilitados por padrão —
+>   ativar seções `Email`/`Reminders`); cobertura de integração ampliada (links de peças, histórico
+>   múltiplo "o mais novo zera", versão diesel, e o digest de lembretes).
+>
+> Próximos: notificações in-app, exportação/exclusão LGPD, e ampliação do catálogo.
 
 1. **Auth + conta** (ASP.NET Identity) com **VIN obrigatório** no fluxo de cadastro do 1º carro.
 2. **Decodificação de VIN** via `IVinDecoder` (vPIC + fallback dataset curado) → resolve

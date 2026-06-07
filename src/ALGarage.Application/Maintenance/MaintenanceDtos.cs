@@ -16,3 +16,6 @@ public sealed record VehicleMaintenanceDto(
     bool HasPlan,
     string? PlanName,
     IReadOnlyList<MaintenanceStatusDto> Items);
+
+/// <summary>Resumo leve para os cards da garagem (sem listar item a item).</summary>
+public sealed record MaintenanceSummaryDto(bool HasPlan, int OverdueCount, int DueSoonCount);

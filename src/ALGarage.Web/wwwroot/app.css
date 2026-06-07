@@ -88,6 +88,7 @@ code {
   padding: 1rem; text-decoration: none; color: var(--text);
 }
 .card:hover { border-color: var(--accent); }
+.card .badge { align-self: flex-start; margin-top: 0.25rem; }
 
 /* Painéis */
 .panel {

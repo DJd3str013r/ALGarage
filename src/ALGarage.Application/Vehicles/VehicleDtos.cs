@@ -25,14 +25,16 @@ public sealed record RegisterVehicleRequest(
     string? Nickname,
     Guid? ModelVariantId);
 
-/// <summary>Veículo resumido para a lista da garagem.</summary>
+/// <summary>Veículo resumido para a lista da garagem (com alerta de manutenção).</summary>
 public sealed record VehicleSummaryDto(
     Guid Id,
     string Vin,
     string? Nickname,
     string Display,        // "V40 R-Design (2017)" ou "VIN não identificado"
     int CurrentOdometerKm,
-    bool Identified);
+    bool Identified,
+    int OverdueCount,
+    int DueSoonCount);
 
 /// <summary>Detalhe do veículo (cabeçalho da tela). Status de manutenção vêm em serviço à parte.</summary>
 public sealed record VehicleDetailDto(

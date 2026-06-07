@@ -1,4 +1,5 @@
 using ALGarage.Application.Abstractions;
+using ALGarage.Domain.Common;
 using ALGarage.Domain.Maintenance;
 
 namespace ALGarage.Application.Maintenance;
@@ -16,23 +17,47 @@ public sealed class MaintenanceStatusService(
 {
     public async Task<VehicleMaintenanceDto> GetForVehicleAsync(Guid vehicleId, CancellationToken ct = default)
     {
+        var (planName, items) = await EvaluateAsync(vehicleId, ct);
+        return items is null
+            ? new VehicleMaintenanceDto(false, null, [])
+            : new VehicleMaintenanceDto(true, planName, items);
+    }
+
+    /// <summary>Resumo leve (contagens por estado) — usado nos cards da garagem.</summary>
+    public async Task<MaintenanceSummaryDto> GetSummaryAsync(Guid vehicleId, CancellationToken ct = default)
+    {
+        var (_, items) = await EvaluateAsync(vehicleId, ct);
+        if (items is null)
+        {
+            return new MaintenanceSummaryDto(false, 0, 0);
+        }
+
+        return new MaintenanceSummaryDto(
+            HasPlan: true,
+            OverdueCount: items.Count(i => i.State == MaintenanceState.Overdue),
+            DueSoonCount: items.Count(i => i.State == MaintenanceState.DueSoon));
+    }
+
+    private async Task<(string? PlanName, IReadOnlyList<MaintenanceStatusDto>? Items)> EvaluateAsync(
+        Guid vehicleId, CancellationToken ct)
+    {
         var userId = currentUser.RequireUserId();
         var vehicle = await garage.GetVehicleAsync(vehicleId, userId, ct);
         if (vehicle?.ModelVariantId is not { } variantId)
         {
-            return new VehicleMaintenanceDto(false, null, []); // sem versão identificada → sem plano
+            return (null, null);
         }
 
         var variant = await catalog.GetVariantDetailAsync(variantId, ct);
         if (variant is null)
         {
-            return new VehicleMaintenanceDto(false, null, []);
+            return (null, null);
         }
 
         var plan = await catalog.GetPlanByEngineFamilyAsync(variant.EngineFamily, ct);
         if (plan is null || plan.Items.Count == 0)
         {
-            return new VehicleMaintenanceDto(false, null, []);
+            return (null, null);
         }
 
         var records = await garage.GetServiceRecordsAsync(vehicleId, ct);
@@ -51,7 +76,7 @@ public sealed class MaintenanceStatusService(
                 s.Evaluation.DueAtKm, s.Evaluation.EstimatedDueDate))
             .ToList();
 
-        return new VehicleMaintenanceDto(true, plan.Name, items);
+        return (plan.Name, items);
     }
 
     private static Dictionary<string, LastServiceForItem> BuildLastServiceByItem(

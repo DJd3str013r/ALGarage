@@ -1,4 +1,6 @@
 using ALGarage.Application.Abstractions;
+using ALGarage.Infrastructure.Email;
+using ALGarage.Infrastructure.Notifications;
 using ALGarage.Infrastructure.Parts;
 using ALGarage.Infrastructure.Persistence;
 using ALGarage.Infrastructure.Persistence.Repositories;
@@ -37,6 +39,13 @@ public static class DependencyInjection
 
         // Seed do catálogo curado.
         services.AddScoped<CuratedDataSeeder>();
+
+        // Notificações de manutenção (e-mail). Desabilitado por padrão; configure "Email"/"Reminders".
+        services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.SectionName));
+        services.Configure<ReminderOptions>(configuration.GetSection(ReminderOptions.SectionName));
+        services.AddScoped<IEmailSender, SmtpEmailSender>();
+        services.AddScoped<IReminderQueries, ReminderQueries>();
+        services.AddHostedService<MaintenanceReminderWorker>();
 
         return services;
     }

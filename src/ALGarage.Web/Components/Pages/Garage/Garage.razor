@@ -28,6 +28,18 @@ else
                 <strong>@(string.IsNullOrWhiteSpace(v.Nickname) ? v.Display : v.Nickname)</strong>
                 <span style="color:var(--text-muted)">@v.Display</span>
                 <span>@v.CurrentOdometerKm.ToString("N0") km</span>
+                @if (v.OverdueCount > 0)
+                {
+                    <span class="badge" style="background:var(--state-overdue)">@v.OverdueCount vencido(s)</span>
+                }
+                else if (v.DueSoonCount > 0)
+                {
+                    <span class="badge" style="background:var(--state-due-soon)">@v.DueSoonCount próximo(s)</span>
+                }
+                else if (v.Identified)
+                {
+                    <span class="badge" style="background:var(--state-ok)">Em dia</span>
+                }
                 @if (!v.Identified)
                 {
                     <span style="color:var(--state-due-soon)">VIN não identificado</span>

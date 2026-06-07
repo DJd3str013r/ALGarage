@@ -12,7 +12,8 @@ public sealed class VehicleService(
     ICatalogRepository catalog,
     IGarageRepository garage,
     IUnitOfWork unitOfWork,
-    ICurrentUser currentUser)
+    ICurrentUser currentUser,
+    Maintenance.MaintenanceStatusService maintenance)
 {
     /// <summary>Decodifica o VIN e devolve as versões candidatas para confirmação do usuário.</summary>
     public async Task<VinDecodeResultDto> DecodeAsync(string rawVin, CancellationToken ct = default)
@@ -79,11 +80,14 @@ public sealed class VehicleService(
         foreach (var v in vehicles)
         {
             var variant = v.ModelVariantId is { } id ? await catalog.GetVariantDetailAsync(id, ct) : null;
+            var summary = await maintenance.GetSummaryAsync(v.Id, ct);
             list.Add(new VehicleSummaryDto(
                 v.Id, v.Vin.Value, v.Nickname,
                 Display: BuildDisplay(variant),
                 v.CurrentOdometerKm,
-                Identified: variant is not null));
+                Identified: variant is not null,
+                OverdueCount: summary.OverdueCount,
+                DueSoonCount: summary.DueSoonCount));
         }
 
         return list;
