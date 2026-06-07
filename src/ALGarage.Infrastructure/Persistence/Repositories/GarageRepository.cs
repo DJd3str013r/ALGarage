@@ -19,10 +19,17 @@ internal sealed class GarageRepository(ApplicationDbContext db) : IGarageReposit
     public async Task<Vehicle?> GetVehicleAsync(Guid vehicleId, Guid userId, CancellationToken ct = default) =>
         await db.Vehicles.FirstOrDefaultAsync(v => v.Id == vehicleId && v.UserId == userId, ct);
 
-    public async Task<bool> VinExistsForUserAsync(Guid userId, string vin, CancellationToken ct = default) =>
-        await db.Vehicles
-            .Where(v => v.UserId == userId)
-            .AnyAsync(v => EF.Property<string>(v, nameof(Vehicle.Vin)) == vin, ct);
+    public async Task<bool> VinExistsForUserAsync(Guid userId, string vin, CancellationToken ct = default)
+    {
+        // Compara pelo value object (EF aplica o conversor Vin<->string). 'Vin' é qualificado para
+        // não colidir com o namespace ALGarage.Infrastructure.Vin.
+        if (!Domain.Vehicles.Vin.TryParse(vin, out var parsed))
+        {
+            return false;
+        }
+
+        return await db.Vehicles.AnyAsync(v => v.UserId == userId && v.Vin == parsed, ct);
+    }
 
     public async Task AddOdometerReadingAsync(OdometerReading reading, CancellationToken ct = default) =>
         await db.OdometerReadings.AddAsync(reading, ct);
