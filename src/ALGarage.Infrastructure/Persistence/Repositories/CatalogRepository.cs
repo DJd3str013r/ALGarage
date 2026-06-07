@@ -44,6 +44,7 @@ internal sealed class CatalogRepository(ApplicationDbContext db) : ICatalogRepos
             where variant.Id == variantId
             select new ModelVariantDetail(
                 variant.Id,
+                variant.VehicleModelId,
                 model.Name,
                 model.Generation,
                 variant.Trim,
@@ -67,4 +68,41 @@ internal sealed class CatalogRepository(ApplicationDbContext db) : ICatalogRepos
         await db.MaintenancePlans.AsNoTracking()
             .Include(p => p.Items)
             .FirstOrDefaultAsync(p => p.EngineFamily == engineFamily, ct);
+
+    public async Task<IReadOnlyList<ModelVariantSummary>> GetVersionsByModelAsync(Guid vehicleModelId, CancellationToken ct = default)
+    {
+        return await (
+            from variant in db.ModelVariants.AsNoTracking()
+            join model in db.VehicleModels.AsNoTracking() on variant.VehicleModelId equals model.Id
+            where variant.VehicleModelId == vehicleModelId
+            orderby variant.ModelYearFrom, variant.Trim
+            select new ModelVariantSummary(
+                variant.Id, model.Name, variant.Trim, variant.MarketingEngine ?? "",
+                variant.ModelYearFrom, variant.ModelYearTo, variant.Market))
+            .ToListAsync(ct);
+    }
+
+    public async Task<IReadOnlyList<FactoryOptionDto>> GetFactoryOptionsByModelAsync(Guid vehicleModelId, CancellationToken ct = default) =>
+        await db.FactoryOptions.AsNoTracking()
+            .Where(o => o.VehicleModelId == vehicleModelId)
+            .OrderBy(o => o.Category).ThenBy(o => o.Name)
+            .Select(o => new FactoryOptionDto(o.Code, o.Category, o.Name, o.Description, o.IsStandard))
+            .ToListAsync(ct);
+
+    public async Task<IReadOnlyList<UpgradeDto>> GetUpgradesByModelAsync(Guid vehicleModelId, string engineFamily, CancellationToken ct = default)
+    {
+        var upgrades = await db.Upgrades.AsNoTracking()
+            .Include(u => u.Stages)
+            .Where(u => u.VehicleModelId == vehicleModelId
+                        && (u.EngineFamily == null || u.EngineFamily == engineFamily))
+            .OrderBy(u => u.Type).ThenBy(u => u.Name)
+            .ToListAsync(ct);
+
+        return upgrades.Select(u => new UpgradeDto(
+            u.Type.ToString(), u.Name, u.Description,
+            u.Stages.OrderBy(s => s.Level).ThenBy(s => s.Name)
+                .Select(s => new StageDto(s.Level, s.Name, s.Description, s.GainsHp, s.GainsNm, s.Requirements))
+                .ToList()))
+            .ToList();
+    }
 }

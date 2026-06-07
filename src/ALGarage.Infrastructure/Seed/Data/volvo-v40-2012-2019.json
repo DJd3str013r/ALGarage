@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "source": "curated+volvo-manual",
   "brandScope": "Volvo",
   "modelScope": "V40 (geração II / plataforma P1), 2012–2019",
@@ -200,6 +200,46 @@
         { "name": "Filtro de ar do motor",           "category": "Filtros",       "intervalKm": 60000,  "intervalMonths": 48,  "whicheverFirst": true,  "partHint": "filtro de ar motor Volvo V40 diesel", "notes": null },
         { "name": "Correia dentada (sincronismo)",   "category": "Distribuição",  "intervalKm": 140000, "intervalMonths": 120, "whicheverFirst": true,  "partHint": "kit correia dentada Volvo V40 diesel", "notes": "1.6 diesel: 140.000 km / máx. 10 anos. 2.0 cinco cilindros: confirmar (~180.000 km)." },
         { "name": "Fluido de freio",                 "category": "Freios",        "intervalKm": null,   "intervalMonths": 24,  "whicheverFirst": false, "partHint": "fluido de freio DOT 4 LV", "notes": "VIDA: a cada 2 anos." }
+      ]
+    }
+  ],
+
+  "_comment_upgrades": "ILUSTRATIVO. Ganhos de potência/torque são aproximados e variam por preparador, combustível e estado do carro. Upgrades podem afetar garantia/durabilidade e exigem itens de suporte (freios, embreagem). Confirme com um especialista.",
+
+  "upgrades": [
+    {
+      "modelKey": "v40", "engineFamily": "petrol-driveE-2.0", "type": "Performance",
+      "name": "Stages de potência — gasolina 2.0 (T4/T5)",
+      "description": "Reprogramação eletrônica e bolt-ons para o motor Drive-E 2.0 turbo.",
+      "stages": [
+        { "level": 1, "name": "Stage 1 (ECU)", "description": "Remap de fábrica com hardware de série.", "gainsHp": 40, "gainsNm": 70, "requirements": "Gasolina premium recomendada; motor saudável." },
+        { "level": 2, "name": "Stage 2", "description": "Downpipe esportivo + admissão de maior fluxo + remap dedicado.", "gainsHp": 70, "gainsNm": 110, "requirements": "Downpipe/admissão; avaliar embreagem e freios." }
+      ]
+    },
+    {
+      "modelKey": "v40", "engineFamily": "petrol-driveE-1.5", "type": "Performance",
+      "name": "Stage de potência — gasolina 1.5 (T3)",
+      "description": "Reprogramação eletrônica do Drive-E 1.5 turbo.",
+      "stages": [
+        { "level": 1, "name": "Stage 1 (ECU)", "description": "Remap de fábrica com hardware de série.", "gainsHp": 25, "gainsNm": 40, "requirements": "Gasolina premium recomendada." }
+      ]
+    },
+    {
+      "modelKey": "v40", "engineFamily": "petrol-i5-2.5", "type": "Performance",
+      "name": "Stage de potência — 2.5 cinco cilindros (T5)",
+      "description": "Reprogramação do 2.5 turbo (pré-Drive-E).",
+      "stages": [
+        { "level": 1, "name": "Stage 1 (ECU)", "description": "Remap mantendo hardware de série.", "gainsHp": 35, "gainsNm": 60, "requirements": "Gasolina premium; motor saudável." }
+      ]
+    },
+    {
+      "modelKey": "v40", "engineFamily": null, "type": "Aesthetic",
+      "name": "Pacote visual / estética",
+      "description": "Itens estéticos populares no V40.",
+      "stages": [
+        { "level": 1, "name": "Kit aerodinâmico R-Design", "description": "Para-choques, saias e difusor no estilo R-Design.", "requirements": "Pintura/instalação especializada." },
+        { "level": 1, "name": "Rodas de liga 18\" + pneus", "description": "Conjunto de rodas maiores com pneus adequados.", "requirements": "Verificar offset e calibragem." },
+        { "level": 1, "name": "Suspensão esportiva (molas)", "description": "Molas de rebaixamento (~30 mm) para postura mais baixa.", "requirements": "Alinhamento após instalação." }
       ]
     }
   ]

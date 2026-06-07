@@ -2,6 +2,7 @@ using ALGarage.Application.Abstractions;
 using ALGarage.Domain.Catalog;
 using ALGarage.Domain.Maintenance;
 using ALGarage.Domain.Service;
+using ALGarage.Domain.Upgrades;
 using ALGarage.Domain.Vehicles;
 using ALGarage.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +36,10 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
     // Manutenção
     public DbSet<MaintenancePlan> MaintenancePlans => Set<MaintenancePlan>();
     public DbSet<MaintenanceItem> MaintenanceItems => Set<MaintenanceItem>();
+
+    // Upgrades
+    public DbSet<Upgrade> Upgrades => Set<Upgrade>();
+    public DbSet<Stage> Stages => Set<Stage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

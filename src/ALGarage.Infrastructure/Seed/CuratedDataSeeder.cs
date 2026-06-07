@@ -1,6 +1,7 @@
 using ALGarage.Domain.Catalog;
 using ALGarage.Domain.Common;
 using ALGarage.Domain.Maintenance;
+using ALGarage.Domain.Upgrades;
 using ALGarage.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -105,10 +106,33 @@ public sealed class CuratedDataSeeder(ApplicationDbContext db, ILogger<CuratedDa
         }
         db.MaintenancePlans.AddRange(plans);
 
+        // Upgrades + stages (ILUSTRATIVO).
+        var upgrades = (data.Upgrades ?? [])
+            .Where(u => modelsByKey.ContainsKey(u.ModelKey))
+            .Select(u => new Upgrade
+            {
+                VehicleModelId = modelsByKey[u.ModelKey].Id,
+                EngineFamily = u.EngineFamily,
+                Type = ParseUpgradeType(u.Type),
+                Name = u.Name,
+                Description = u.Description,
+                Stages = u.Stages.Select(s => new Stage
+                {
+                    Level = s.Level,
+                    Name = s.Name,
+                    Description = s.Description,
+                    GainsHp = s.GainsHp,
+                    GainsNm = s.GainsNm,
+                    Requirements = s.Requirements
+                }).ToList()
+            })
+            .ToList();
+        db.Upgrades.AddRange(upgrades);
+
         await db.SaveChangesAsync(ct);
         logger.LogInformation(
-            "Catálogo semeado: {Models} modelos, {Engines} motores, {Variants} versões, {Plans} planos.",
-            modelsByKey.Count, enginesByCode.Count, variants.Count, plans.Count);
+            "Catálogo semeado: {Models} modelos, {Engines} motores, {Variants} versões, {Plans} planos, {Upgrades} upgrades.",
+            modelsByKey.Count, enginesByCode.Count, variants.Count, plans.Count, upgrades.Count);
     }
 
     private static FuelType ParseFuel(string fuel) => fuel switch
@@ -120,6 +144,13 @@ public sealed class CuratedDataSeeder(ApplicationDbContext db, ILogger<CuratedDa
         "Hybrid" => FuelType.Hybrid,
         "Electric" => FuelType.Electric,
         _ => FuelType.Unknown
+    };
+
+    private static UpgradeType ParseUpgradeType(string t) => t switch
+    {
+        "Performance" => UpgradeType.Performance,
+        "Aesthetic" => UpgradeType.Aesthetic,
+        _ => UpgradeType.Performance
     };
 
     private static Aspiration ParseAspiration(string a) => a switch

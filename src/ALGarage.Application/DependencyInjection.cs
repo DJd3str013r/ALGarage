@@ -22,6 +22,7 @@ public static class DependencyInjection
         services.AddScoped<MaintenanceStatusService>();
         services.AddScoped<ServiceHistoryService>();
         services.AddScoped<PartsLinkService>();
+        services.AddScoped<Catalog.ModelCatalogService>();
         services.AddScoped<Notifications.MaintenanceNotificationService>();
 
         return services;

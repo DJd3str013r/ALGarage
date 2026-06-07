@@ -16,7 +16,8 @@ public sealed record CuratedDataset(
     IReadOnlyList<EngineSeed> Engines,
     IReadOnlyList<VariantSeed> Variants,
     IReadOnlyList<FactoryOptionSeed> FactoryOptions,
-    IReadOnlyList<MaintenancePlanSeed> MaintenancePlans);
+    IReadOnlyList<MaintenancePlanSeed> MaintenancePlans,
+    IReadOnlyList<UpgradeSeed>? Upgrades);
 
 public sealed record BrandSeed(string Name, string Slug, string? Country);
 
@@ -68,3 +69,19 @@ public sealed record MaintenanceItemSeed(
     bool WhicheverFirst,
     string? PartHint,
     string? Notes);
+
+public sealed record UpgradeSeed(
+    string ModelKey,
+    string? EngineFamily,
+    string Type,
+    string Name,
+    string? Description,
+    IReadOnlyList<StageSeed> Stages);
+
+public sealed record StageSeed(
+    int Level,
+    string Name,
+    string? Description,
+    int? GainsHp,
+    int? GainsNm,
+    string? Requirements);

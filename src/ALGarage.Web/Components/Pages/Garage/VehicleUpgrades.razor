@@ -1,0 +1,76 @@
+@page "/garagem/{Id:guid}/upgrades"
+@attribute [Authorize]
+@inject ModelCatalogService Catalog
+
+<PageTitle>Upgrades — ÄLGarage</PageTitle>
+
+<div class="page-head">
+    <h1>Upgrades</h1>
+    <a href="@($"/garagem/{Id}")">← Carro</a>
+</div>
+
+<p style="color:var(--text-muted)">
+    ⚠️ Ganhos são <strong>ilustrativos</strong> e variam por preparador, combustível e estado do carro.
+    Upgrades podem afetar garantia/durabilidade e exigir itens de suporte (freios, embreagem).
+</p>
+
+@if (upgrades is null)
+{
+    <p style="color:var(--text-muted)">Versão não identificada — sem upgrades para este carro.</p>
+}
+else if (upgrades.Count == 0)
+{
+    <p style="color:var(--text-muted)">Nenhum upgrade catalogado para esta versão.</p>
+}
+else
+{
+    @foreach (var grp in upgrades.GroupBy(u => u.Type))
+    {
+        <h2>@(grp.Key == "Performance" ? "Performance / motorização" : "Estética")</h2>
+        @foreach (var u in grp)
+        {
+            <section class="panel">
+                <h3>@u.Name</h3>
+                @if (!string.IsNullOrWhiteSpace(u.Description))
+                {
+                    <p style="color:var(--text-muted)">@u.Description</p>
+                }
+                <table class="table">
+                    <thead><tr><th>Nível / item</th><th>Ganho</th><th>Requisitos</th></tr></thead>
+                    <tbody>
+                        @foreach (var s in u.Stages)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@s.Name</strong>
+                                    @if (!string.IsNullOrWhiteSpace(s.Description)) { <text> — @s.Description</text> }
+                                </td>
+                                <td>@FormatGain(s)</td>
+                                <td>@(s.Requirements ?? "—")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        }
+    }
+}
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    private IReadOnlyList<UpgradeDto>? upgrades;
+
+    protected override async Task OnInitializedAsync() => upgrades = await Catalog.GetUpgradesAsync(Id);
+
+    private static string FormatGain(StageDto s)
+    {
+        if (s.GainsHp is null && s.GainsNm is null)
+        {
+            return "—";
+        }
+
+        var hp = s.GainsHp is { } h ? $"+{h} cv" : "";
+        var nm = s.GainsNm is { } n ? $"+{n} Nm" : "";
+        return string.Join(" / ", new[] { hp, nm }.Where(x => x.Length > 0));
+    }
+}

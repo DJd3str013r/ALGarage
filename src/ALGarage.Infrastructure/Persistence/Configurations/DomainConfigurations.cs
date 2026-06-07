@@ -1,6 +1,7 @@
 using ALGarage.Domain.Catalog;
 using ALGarage.Domain.Maintenance;
 using ALGarage.Domain.Service;
+using ALGarage.Domain.Upgrades;
 using ALGarage.Domain.Vehicles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -155,6 +156,37 @@ internal sealed class MaintenancePlanConfiguration : IEntityTypeConfiguration<Ma
             .WithOne()
             .HasForeignKey(i => i.MaintenancePlanId)
             .OnDelete(DeleteBehavior.Cascade);
+    }
+}
+
+internal sealed class UpgradeConfiguration : IEntityTypeConfiguration<Upgrade>
+{
+    public void Configure(EntityTypeBuilder<Upgrade> b)
+    {
+        b.ToTable("upgrades");
+        b.HasKey(x => x.Id);
+        b.Property(x => x.EngineFamily).HasMaxLength(40);
+        b.Property(x => x.Type).HasConversion<string>().HasMaxLength(20);
+        b.Property(x => x.Name).HasMaxLength(120).IsRequired();
+        b.Property(x => x.Description).HasMaxLength(600);
+        b.HasIndex(x => x.VehicleModelId);
+
+        b.HasMany(x => x.Stages)
+            .WithOne()
+            .HasForeignKey(s => s.UpgradeId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
+
+internal sealed class StageConfiguration : IEntityTypeConfiguration<Stage>
+{
+    public void Configure(EntityTypeBuilder<Stage> b)
+    {
+        b.ToTable("stages");
+        b.HasKey(x => x.Id);
+        b.Property(x => x.Name).HasMaxLength(120).IsRequired();
+        b.Property(x => x.Description).HasMaxLength(600);
+        b.Property(x => x.Requirements).HasMaxLength(400);
     }
 }
 

@@ -1,3 +1,4 @@
+using ALGarage.Application.Catalog;
 using ALGarage.Application.Maintenance;
 using ALGarage.Application.Notifications;
 using ALGarage.Application.Parts;
@@ -84,6 +85,33 @@ public sealed class AdditionalFlowsIntegrationTests(PostgresFixture fixture)
             [new AddServiceItemDto("Óleo (novo)", oil, null)]));
         (await maintenance.GetForVehicleAsync(id)).Items.First(i => i.Category == "Óleo")
             .State.ShouldBe(MaintenanceState.Ok);
+    }
+
+    [Fact]
+    public async Task Factory_info_and_upgrades_are_available_for_identified_vehicle()
+    {
+        var userId = Guid.NewGuid();
+        await using var provider = fixture.BuildProvider(userId);
+        using var scope = provider.CreateScope();
+        var sp = scope.ServiceProvider;
+        var vehicles = sp.GetRequiredService<VehicleService>();
+        var catalog = sp.GetRequiredService<ModelCatalogService>();
+
+        var decode = await vehicles.DecodeAsync(Vin2016);
+        var momentum = decode.CandidateVariants.First(c => c.Trim == "Momentum"); // petrol-driveE-2.0
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var id = await vehicles.RegisterAsync(new RegisterVehicleRequest(
+            Vin2016, today.AddYears(-1), 0, 10_000, 20_000, 20, "Momentum", momentum.Id));
+
+        var info = await catalog.GetFactoryInfoAsync(id);
+        info.ShouldNotBeNull();
+        info!.Versions.ShouldNotBeEmpty();
+        info.Options.ShouldNotBeEmpty();
+
+        var upgrades = await catalog.GetUpgradesAsync(id);
+        upgrades.ShouldNotBeNull();
+        upgrades!.ShouldContain(u => u.Type == "Performance" && u.Stages.Count > 0);
+        upgrades.ShouldContain(u => u.Type == "Aesthetic");
     }
 
     [Fact]

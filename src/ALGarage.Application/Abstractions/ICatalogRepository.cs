@@ -17,4 +17,13 @@ public interface ICatalogRepository
 
     /// <summary>Plano de manutenção (com itens) para uma família de motor — null se não houver.</summary>
     Task<MaintenancePlan?> GetPlanByEngineFamilyAsync(string engineFamily, CancellationToken ct = default);
+
+    /// <summary>Todas as versões de fábrica de um modelo.</summary>
+    Task<IReadOnlyList<ModelVariantSummary>> GetVersionsByModelAsync(Guid vehicleModelId, CancellationToken ct = default);
+
+    /// <summary>Opcionais/extras de fábrica de um modelo.</summary>
+    Task<IReadOnlyList<FactoryOptionDto>> GetFactoryOptionsByModelAsync(Guid vehicleModelId, CancellationToken ct = default);
+
+    /// <summary>Upgrades do modelo: estética (família nula) + performance da família de motor.</summary>
+    Task<IReadOnlyList<UpgradeDto>> GetUpgradesByModelAsync(Guid vehicleModelId, string engineFamily, CancellationToken ct = default);
 }

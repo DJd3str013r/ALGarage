@@ -33,7 +33,13 @@ O coração do produto: cadastrar o carro e ser avisado da manutenção.
 >   ativar seções `Email`/`Reminders`); cobertura de integração ampliada (links de peças, histórico
 >   múltiplo "o mais novo zera", versão diesel, e o digest de lembretes).
 >
-> Próximos: notificações in-app, exportação/exclusão LGPD, e ampliação do catálogo.
+> - **Incremento 4:** **tela de upgrades** (#8) com stages de performance por família de motor +
+>   estética (dataset curado, ganhos ilustrativos); **tela de versões de fábrica** (#7) listando
+>   todas as versões e opcionais do modelo; e a **migration `InitialCreate` commitada pela CI**
+>   (job smoke gera e versiona uma vez), deixando o deploy no Pi pronto.
+>
+> Próximos: códigos OEM/peças compatíveis (depende de fonte), +lojas no buscador,
+> exportação/exclusão LGPD, e o stretch 3D/2D.
 
 1. **Auth + conta** (ASP.NET Identity) com **VIN obrigatório** no fluxo de cadastro do 1º carro.
 2. **Decodificação de VIN** via `IVinDecoder` (vPIC + fallback dataset curado) → resolve

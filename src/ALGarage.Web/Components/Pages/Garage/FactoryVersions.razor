@@ -1,0 +1,59 @@
+@page "/garagem/{Id:guid}/versoes"
+@attribute [Authorize]
+@inject ModelCatalogService Catalog
+
+<PageTitle>Versões de fábrica — ÄLGarage</PageTitle>
+
+<div class="page-head">
+    <h1>Versões de fábrica</h1>
+    <a href="@($"/garagem/{Id}")">← Carro</a>
+</div>
+
+@if (info is null)
+{
+    <p style="color:var(--text-muted)">Versão não identificada — sem catálogo de fábrica para este carro.</p>
+}
+else
+{
+    <section class="panel">
+        <h2>@info.ModelName — versões</h2>
+        <table class="table">
+            <thead><tr><th>Versão</th><th>Motor</th><th>Anos</th><th>Mercado</th></tr></thead>
+            <tbody>
+                @foreach (var v in info.Versions)
+                {
+                    <tr>
+                        <td>@v.Trim</td>
+                        <td>@v.MarketingEngine</td>
+                        <td>@v.ModelYearFrom–@v.ModelYearTo</td>
+                        <td>@(v.Market ?? "—")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <section class="panel">
+        <h2>Opcionais / extras de fábrica</h2>
+        @foreach (var grp in info.Options.GroupBy(o => o.Category))
+        {
+            <h3>@grp.Key</h3>
+            <ul>
+                @foreach (var o in grp)
+                {
+                    <li>
+                        <strong>@o.Name</strong>@(o.IsStandard ? " (de série)" : "")
+                        @if (!string.IsNullOrWhiteSpace(o.Description)) { <text> — @o.Description</text> }
+                    </li>
+                }
+            </ul>
+        }
+    </section>
+}
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    private ModelFactoryInfoDto? info;
+
+    protected override async Task OnInitializedAsync() => info = await Catalog.GetFactoryInfoAsync(Id);
+}
