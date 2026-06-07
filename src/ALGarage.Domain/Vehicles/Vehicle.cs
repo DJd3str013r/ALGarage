@@ -15,6 +15,15 @@ public sealed class Vehicle : AggregateRoot
     public Vehicle(Guid userId, Vin vin, DateOnly purchaseDate, int previousOwners,
         int odometerAtAcquisitionKm, int currentOdometerKm, double avgDailyKm, string? nickname = null)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(previousOwners);
+        ArgumentOutOfRangeException.ThrowIfNegative(odometerAtAcquisitionKm);
+        ArgumentOutOfRangeException.ThrowIfNegative(avgDailyKm);
+        if (currentOdometerKm < odometerAtAcquisitionKm)
+        {
+            throw new ArgumentException(
+                "Km atual não pode ser menor que o km na aquisição.", nameof(currentOdometerKm));
+        }
+
         UserId = userId;
         Vin = vin;
         PurchaseDate = purchaseDate;

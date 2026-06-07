@@ -19,11 +19,16 @@ coberta. Cada fase entrega valor de ponta a ponta.
 
 O coração do produto: cadastrar o carro e ser avisado da manutenção.
 
-> **Status (incremento 1 entregue):** backbone completo — persistência EF Core (configs +
-> seeding do V40), cadeia de decodificação de VIN, serviços de aplicação (cadastro, garagem,
-> estimativa, histórico, peças) com testes da lógica pura; auth ASP.NET Identity e UI Blazor (SSR,
-> dark/bilíngue) da garagem. Falta: gerar a migration inicial e validar o build local (este ambiente
-> não tem o SDK .NET), refinos de UX e mais testes de integração.
+> **Status:** núcleo entregue e **verificado na CI** (build .NET 10, testes, e smoke que sobe o app
+> com Postgres + migration + seed + HTTP).
+> - **Incremento 1:** persistência EF Core (configs + seeding do V40), cadeia de decodificação de VIN,
+>   serviços de aplicação (cadastro, garagem, estimativa, histórico, peças), auth ASP.NET Identity,
+>   UI Blazor (SSR, dark/bilíngue).
+> - **Incremento 2:** validações de domínio (km/aquisição/donos) e **teste de integração** do fluxo
+>   cadastro → estimativa → serviço (reseta), rodando contra Postgres real via Testcontainers
+>   (requer Docker).
+>
+> Próximos: refinos de UX (alertas na lista da garagem), notificações, e ampliação de cobertura.
 
 1. **Auth + conta** (ASP.NET Identity) com **VIN obrigatório** no fluxo de cadastro do 1º carro.
 2. **Decodificação de VIN** via `IVinDecoder` (vPIC + fallback dataset curado) → resolve
