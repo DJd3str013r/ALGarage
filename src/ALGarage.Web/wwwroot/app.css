@@ -79,6 +79,8 @@ code {
 .linklike { background: none; border: none; color: var(--accent); cursor: pointer; padding: 0; font-size: 1rem; }
 
 .page-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.subnav { margin: 0.25rem 0 1rem; color: var(--text-muted); }
+.subnav a { margin-right: 0.25rem; }
 
 /* Cards da garagem */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
